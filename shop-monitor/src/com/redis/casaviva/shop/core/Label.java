@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 user
+ * Copyright (C) 2018 Redjan Shabani
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,21 +16,10 @@
  */
 package com.redis.casaviva.shop.core;
 
-import java.time.Instant;
-
 /**
  *
- * @author user
+ * @author Redjan Shabani
  */
-public interface Article {
-	public String getCode();
-	public String getBarcode();
-	public String getSector();
-	public String getCategory();
-	public String getDescription();
-	public String getUnit();
-	public Double getQuantity();
-	public Double getSellPrice();
-	public Double getSellPriceTemp();
-	public Instant getSellPriceTime();
+public interface Label {
+	
 }

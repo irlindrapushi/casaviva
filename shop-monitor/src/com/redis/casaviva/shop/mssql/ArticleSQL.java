@@ -30,37 +30,95 @@ import java.util.logging.Logger;
  *
  * @author user
  */
-public class ArticleSQL {
+public class ArticleSQL implements Article {
+	private final String code;
+	private final String barcode;
+	private final String sector;
+	private final String category;
+	private final String description;
+	private final String unit;
+	private final Double quantity;
+	private final Double sellPrice;
+	private final Double sellPriceTemp;
+	private final Instant sellPriceTime;
+
+	public ArticleSQL(String code, String barcode, String sector, String category, String description, String unit, Double quantity, Double sellPrice, Double sellPriceTemp, Instant sellPriceTime) {
+		this.code = code;
+		this.barcode = barcode;
+		this.sector = sector;
+		this.category = category;
+		this.description = description;
+		this.unit = unit;
+		this.quantity = quantity;
+		this.sellPrice = sellPrice;
+		this.sellPriceTemp = sellPriceTemp;
+		this.sellPriceTime = sellPriceTime;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public String getSector() {
+		return sector;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getUnit() {
+		return unit;
+	}
+
+	public Double getQuantity() {
+		return quantity;
+	}
+
+	public Double getSellPrice() {
+		return sellPrice;
+	}
+
+	public Double getSellPriceTemp() {
+		return sellPriceTemp;
+	}
+
+	public Instant getSellPriceTime() {
+		return sellPriceTime;
+	}
+	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "[" + this.code + "] " + this.description;
+	}
 	
 	public static void forEach(Consumer<Article> consumer) {
-		String query = ""
-			+ "SELECT "
-			+ "	[code], "
-			+ "	[barcode], "
-			+ "	[sector], "
-			+ "	[category], "
-			+ "	[description], "
-			+ "	[unit], "
-			+ "	[buyPrice], "
-			+ "	[costPrice], "
-			+ "	[sellPrice], "
-			+ "	[sellPriceTemp], "
-			+ "	[sellPriceTime] "
-			+ "FROM "
-			+ "	[CatalogItem]";
+		String query = "EXECUTE [readStockArticles] ?";
 		try(Connection cn = SQL.getConnection()) {
 			PreparedStatement ps = cn.prepareStatement(query);
 			
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				Article art = new ArticleImpl(
+				Article art = new ArticleSQL(
 					rs.getString("code"), 
 					rs.getString("barcode"), 
 					rs.getString("sector"), 
 					rs.getString("category"), 
 					rs.getString("description"), 
 					rs.getString("unit"), 
+					rs.getDouble("quantity"),
 					rs.getDouble("sellPrice"), 
 					rs.getDouble("sellPriceTemp"), 
 					rs.getTimestamp("instant").toInstant()
@@ -74,74 +132,5 @@ public class ArticleSQL {
 		}
 	}
 	
-	private static class ArticleImpl implements Article {
-		private final String code;
-		private final String barcode;
-		private final String sector;
-		private final String category;
-		private final String description;
-		private final String unit;
-		private final Double sellPrice;
-		private final Double sellPriceTemp;
-		private final Instant sellPriceTime;
-
-		public ArticleImpl(String code, String barcode, String sector, String category, String description, String unit, Double sellPrice, Double sellPriceTemp, Instant sellPriceTime) {
-			this.code = code;
-			this.barcode = barcode;
-			this.sector = sector;
-			this.category = category;
-			this.description = description;
-			this.unit = unit;
-			this.sellPrice = sellPrice;
-			this.sellPriceTemp = sellPriceTemp;
-			this.sellPriceTime = sellPriceTime;
-		}
-
-		@Override
-		public String getCode() {
-			return code;
-		}
-
-		@Override
-		public String getBarcode() {
-			return barcode;
-		}
-
-		@Override
-		public String getSector() {
-			return sector;
-		}
-
-		@Override
-		public String getCategory() {
-			return category;
-		}
-
-		@Override
-		public String getDescription() {
-			return description;
-		}
-
-		@Override
-		public String getUnit() {
-			return unit;
-		}
-
-		@Override
-		public Double getSellPrice() {
-			return sellPrice;
-		}
-
-		@Override
-		public Double getSellPriceTemp() {
-			return sellPriceTemp;
-		}
-
-		@Override
-		public Instant getSellPriceTime() {
-			return sellPriceTime;
-		}
-
-		
-	}
+	
 }

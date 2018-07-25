@@ -41,4 +41,8 @@ public class SQL {
 	public static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(getUrl(), getUsername(), getPassword());
 	}
+	
+	public static void main(String[] args) {
+		SQL.setUrl("jdbc:sqlserver://217.21.146.248:3306;databaseName=REDIS_CA");
+	}
 }

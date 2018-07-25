@@ -16,67 +16,18 @@
  */
 package com.redis.casaviva.shop.core;
 
-import java.util.Objects;
+import com.redis.utils.Dataset;
 
 /**
  *
  * @author user
  */
-public class Stock {
-	private final String code, name, address, phone, email;
-
-	public Stock(String code, String name, String address, String phone, String email) {
-		this.code = code;
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-		this.email = email;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 7;
-		hash = 29 * hash + Objects.hashCode(this.code);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final Stock other = (Stock) obj;
-		return Objects.equals(this.code, other.code);
-	}
-
-	@Override
-	public String toString() {
-		return "[" + this.code + "] " + this.name;
-	}
+public interface Stock {
+	public String getCode();
+	public String getName();
+	public String getAddress();
+	public String getPhone();
+	public String getEmail();
+	
+	public Dataset<Article> getArticles();
 }

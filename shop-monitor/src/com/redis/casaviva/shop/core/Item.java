@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 user
+ * Copyright (C) 2018 Redjan Shabani
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,26 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.redis.casaviva.shop;
-
-import com.redis.casaviva.shop.core.Stock;
-import com.redis.casaviva.shop.mssql.StockSQL;
-import com.redis.casaviva.shop.swing.FrameStock;
-import java.util.prefs.Preferences;
+package com.redis.casaviva.shop.core;
 
 /**
  *
- * @author user
+ * @author Redjan Shabani
  */
-public class App {
-	
-	private static final Preferences PREFERENCES = Preferences.userNodeForPackage(App.class);
-	
-	public static void main(String[] args) {
-		Stock stock = StockSQL.select(PREFERENCES.node("stock").get("code", ""));
-		if(stock != null) {			
-			FrameStock frame = new FrameStock(stock);
-			frame.setVisible(true);
-		}
-	}
+public interface Item {
+	public String getCode();
+	public String getDescription();
+	public String getUnit();
 }
