@@ -172,13 +172,11 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
                table.getColumnModel().getColumn(1).setHeaderValue("Kodi");
                table.getColumnModel().getColumn(2).setHeaderValue("Kategoria");
                table.getColumnModel().getColumn(3).setHeaderValue("Tipi");
-               table.getColumnModel().getColumn(4).setHeaderValue("Marka");
-               table.getColumnModel().getColumn(5).setHeaderValue("Modeli");
-               table.getColumnModel().getColumn(6).setHeaderValue("Cmimi");
-               table.getColumnModel().getColumn(7).setHeaderValue("Oferta");
-               table.getColumnModel().getColumn(8).setHeaderValue("Skonto");
-               table.getColumnModel().getColumn(9).setHeaderValue("Gjendje");
-               table.getColumnModel().getColumn(10).setHeaderValue("");
+               table.getColumnModel().getColumn(4).setHeaderValue("Cmimi");
+               table.getColumnModel().getColumn(5).setHeaderValue("Oferta");
+               table.getColumnModel().getColumn(6).setHeaderValue("Skonto");
+               table.getColumnModel().getColumn(7).setHeaderValue("Gjendje");
+               table.getColumnModel().getColumn(8).setHeaderValue("");
           }
 
           int width = this.getPreferredSize().width;
@@ -188,10 +186,10 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           }
 
           table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));
-          table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(6));
-          table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(7));
-          table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(8));
-          table.getColumn(9).setCellRenderer(tableModel.getColumnTableCellRenderer(9));
+          table.getColumn(5).setCellRenderer(tableModel.getColumnTableCellRenderer(6));
+          table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(7));
+          table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(8));
+          table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(9));
           //this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());
 
           jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);

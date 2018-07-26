@@ -84,7 +84,7 @@ public abstract class SqlServer {
         
 	public static void main(String[] args) {
 		SqlServer sqlServer = SqlServer.getInstance();
-		sqlServer.setHostName("192.168.1.14");
+		sqlServer.setHostName("217.21.146.248");
 		sqlServer.setDatabaseName("CA_REDIS");
 		sqlServer.setPortNumber("3306");
 		sqlServer.setUserName("sa");

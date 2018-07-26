@@ -23,9 +23,7 @@ import java.util.logging.Logger;
 public class SqlStock {
 	
 	private static final String SQL = ""
-		+ "SELECT code, barcode, description, "
-		+	"M1, M5, M6, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16, "
-		+	"M1 + M5 + M6 + M7 + M8 + M9 + M10 + M11 + M12 + M13 + M14 + M15 + M16 AS M0 "
+		+ "SELECT code, barcode, description, unit, M01, M02, M01 + M02 AS M0 "
 		+ "FROM ViewStocks "
 		+ "ORDER BY code ASC";
 	public static List<Stock> read(){
@@ -36,22 +34,12 @@ public class SqlStock {
 			
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
-				Stock stock = new Stock(rs.getString("code"), rs.getString("barcode"), rs.getString("description"));
-				stock.put("M1", rs.getDouble("M1"));
-				stock.put("M5", rs.getDouble("M5"));
-				stock.put("M6", rs.getDouble("M6"));
-				stock.put("M7", rs.getDouble("M7"));
-				stock.put("M8", rs.getDouble("M8"));
-				stock.put("M9", rs.getDouble("M9"));
-				stock.put("M10", rs.getDouble("M10"));
-				stock.put("M11", rs.getDouble("M11"));
-				stock.put("M12", rs.getDouble("M12"));
-				stock.put("M13", rs.getDouble("M13"));
-				stock.put("M14", rs.getDouble("M14"));
-				stock.put("M15", rs.getDouble("M15"));
-				stock.put("M16", rs.getDouble("M16"));
-				stock.put("M0", rs.getDouble("M0"));
+				Stock stock = new Stock(rs.getString("code"), rs.getString("barcode"), rs.getString("description"), rs.getString("unit"));
+				stock.put("M01", rs.getDouble("M01"));
+				stock.put("M02", rs.getDouble("M02"));
 				stocks.add(stock);
+				
+				System.out.println(stock.getCode());
 			}
 		}
 		catch (SQLException ex) {

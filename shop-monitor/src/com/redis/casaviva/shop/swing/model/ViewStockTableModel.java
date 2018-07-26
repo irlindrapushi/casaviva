@@ -16,25 +16,15 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ViewStockTableModel extends DefaultTableModel{
 	
-	public static final int COLUMN_COUNT = 17;
+	public static final int COLUMN_COUNT = 7;
 	
 	public static final String[] COLUMN_LABELS = {
 		"Kodi", 
 		"Barkodi", 
-		"Pershkrimi",
+		"Pershkrimi",		
+		"Njesia",
 		"Qendra", 
-		"Fieri", 
-		"Tirana1", 
-		"Elbasani", 
-		"Kavaja", 
-		"Vlora", 
-		"Durresi", 
-		"Shkodra", 
-		"Tirana 2", 
-		"Lushnja", 
-		"Korca",
-		"Servisi", 
-		"Shumica",
+		"Pajtoni",
 		"Total"
 	};
 	
@@ -42,18 +32,7 @@ public class ViewStockTableModel extends DefaultTableModel{
 		String.class,
 		String.class,
 		String.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
-		Integer.class,
+		String.class,
 		Integer.class,
 		Integer.class,
 		Integer.class

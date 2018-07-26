@@ -79,7 +79,7 @@ public class ProductTableModel extends DefaultTableModel{
 	
 	public TableCellRenderer getColumnTableCellRenderer(int columnIndex){
 		
-		if(columnIndex >= 8){
+		if(columnIndex >= 6){
 			return new DefaultTableCellRenderer(){
 				@Override
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {

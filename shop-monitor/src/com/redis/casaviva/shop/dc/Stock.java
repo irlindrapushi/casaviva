@@ -7,19 +7,21 @@ package com.redis.casaviva.shop.dc;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  *
  * @author Redjan Shabani info@redis.com.al
  */
 public class Stock {
-	private final String code, barcode, description;
+	private final String code, barcode, description, unit;
 	private final Map<String,Double> quantities;
 
-	public Stock(String code, String barcode, String description) {
+	public Stock(String code, String barcode, String description, String unit) {
 		this.code = code;
 		this.barcode = barcode;
 		this.description = description;
+		this.unit = unit;
 		this.quantities = new HashMap<>();
 	}
 
@@ -35,6 +37,10 @@ public class Stock {
 		return description;
 	}
 
+	public String getUnit() {
+		return unit;
+	}
+	
 	public Double get(String key) {
 		return quantities.get(key);
 	}
@@ -48,20 +54,10 @@ public class Stock {
 			this.code, 
 			this.barcode, 
 			this.description,
-			this.quantities.getOrDefault("M1", 0.0d),
-			this.quantities.getOrDefault("M5", 0.0d),
-			this.quantities.getOrDefault("M6", 0.0d),
-			this.quantities.getOrDefault("M7", 0.0d),
-			this.quantities.getOrDefault("M8", 0.0d),
-			this.quantities.getOrDefault("M9", 0.0d),
-			this.quantities.getOrDefault("M10", 0.0d),
-			this.quantities.getOrDefault("M11", 0.0d),
-			this.quantities.getOrDefault("M12", 0.0d),
-			this.quantities.getOrDefault("M13", 0.0d),
-			this.quantities.getOrDefault("M14", 0.0d),
-			this.quantities.getOrDefault("M15", 0.0d),
-			this.quantities.getOrDefault("M16", 0.0d),
-			this.quantities.getOrDefault("M0", 0.0d)
+			this.unit,
+			this.quantities.getOrDefault("M01", 0.0d),
+			this.quantities.getOrDefault("M02", 0.0d),
+			this.quantities.values().stream().mapToDouble(Double::valueOf).sum()
 		};
 	}
 	

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class SqlProduct{
 
 	private static final String SQL = ""
-		+ "SELECT p.code, p.barcode, p.category, p.type, p.brand, p.model, p.description, ISNULL(p.warranty, 0) AS warranty, p.unit, ISNULL(p.priceNewValue, 0) AS priceNewValue, ISNULL(p.priceOldValue, 0) AS priceOldValue, p.priceInstant, ISNULL(s.quantity, 0) AS stock "
+		+ "SELECT p.code, p.barcode, p.category, p.type, p.description, p.unit, ISNULL(p.priceNewValue, 0) AS priceNewValue, ISNULL(p.priceOldValue, 0) AS priceOldValue, p.priceInstant, ISNULL(s.quantity, 0) AS stock "
 		+ "FROM dbo.Product p LEFT JOIN Stock s ON p.code = s.product AND s.warehouse = ? "
 		+ "ORDER BY s.warehouse ASC, p.code ASC, p.priceInstant ASC;";
 	
@@ -42,7 +42,7 @@ public class SqlProduct{
 				Instant priceInstant = rs.getTimestamp("priceInstant").toInstant();
 				Double stock = rs.getDouble("stock");
 				
-				Product product = new Product(rs.getString("code"), rs.getString("barcode"), rs.getString("category"), rs.getString("type"), rs.getString("brand"), rs.getString("model"), rs.getString("description"), rs.getString("unit"), rs.getInt("warranty")) {
+				Product product = new Product(rs.getString("code"), rs.getString("barcode"), rs.getString("category"), rs.getString("type"), rs.getString("description"), rs.getString("unit")) {
 					@Override
 					public Double getNewPrice() {return priceNewValue;}
 					
@@ -80,7 +80,7 @@ public class SqlProduct{
 				Instant priceInstant = rs.getTimestamp("priceInstant").toInstant();
 				Double stock = rs.getDouble("stock");
 				
-				Product product = new Product(rs.getString("code"), rs.getString("barcode"), rs.getString("category"), rs.getString("type"), rs.getString("brand"), rs.getString("model"), rs.getString("description"), rs.getString("unit"), rs.getInt("warranty")) {
+				Product product = new Product(rs.getString("code"), rs.getString("barcode"), rs.getString("category"), rs.getString("type"), rs.getString("description"), rs.getString("unit")) {
 					@Override
 					public Double getNewPrice() {return priceNewValue;}
 					

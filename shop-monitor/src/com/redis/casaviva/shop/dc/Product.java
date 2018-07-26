@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public abstract class Product {
 
-	private final String code, barcode, category, type, brand, model, description, unit;
-	private final int warranty ;
+	private final String code, barcode, category, type, description, unit;
 
 
 	/**
@@ -34,14 +33,11 @@ public abstract class Product {
 	 * @param unit
 	 * @param warranty
 	 */
-	public Product(String code, String barcode, String category, String type, String brand, String model, String description, String unit, int warranty) {
-		this.warranty = warranty;
+	public Product(String code, String barcode, String category, String type, String description, String unit) {
 		this.code = code;
 		this.barcode = barcode;
 		this.category = category;
 		this.type = type;
-		this.brand = brand;
-		this.model = model;
 		this.description = description;
 		this.unit = unit;
 	}
@@ -62,24 +58,12 @@ public abstract class Product {
 		return type;
 	}
 
-	public String getBrand() {
-		return brand;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
 	public String getUnit() {
 		return unit;
-	}
-	
-	public int getWarranty() {
-		return warranty;
 	}
 
 	public Double getPrice() {
@@ -115,7 +99,7 @@ public abstract class Product {
 	
 	public Object[] toArray(){
 		return new Object[]{
-			this.getCode(), this.getBarcode(), this.getCategory(), this.getType(), this.getBrand(), this.getModel(), this.getDescription(), this.getUnit(), this.getWarranty(),this.getOldPrice(), this.getNewPrice(), this.getStock()
+			this.getCode(), this.getBarcode(), this.getCategory(), this.getType(), this.getDescription(), this.getUnit(), this.getOldPrice(), this.getNewPrice(), this.getStock()
 		};
 	}
 	
@@ -123,44 +107,38 @@ public abstract class Product {
 	
 	
 	
-	public final static int FIELD_COUNT = 12;
+	public final static int FIELD_COUNT = 9;
 	
 	public final static String[] FIELD_NAMES = {
 		"code", 
 		"barcode", 
 		"category", 
-		"type", 
-		"brand", 
-		"model", 
+		"type",
 		"description", 
 		"unit",
-		"warranty",
 		"price",
 		"offer",
 		"stock"
 	};
 	
 	public final static String[] FIELD_LABELS = {
-		"Kodi", "Barkodi", "Kategoria", "Tipi", "Marka", "Modeli", "Pershkrimi", "Njesia", "Garancia", "Cmimi", "Oferta", "Gjendja"
+		"Kodi", "Barkodi", "Sektori", "Kategoria", "Pershkrimi", "Njesia", "Cmimi", "Oferta", "Gjendja"
 	};
 	
 	public final static Class[] FIELD_CLASSES = {
 		String.class, 
 		String.class, 
 		String.class,
-		String.class, 
+		String.class,
 		String.class,
 		String.class, 
-		String.class,
-		String.class, 
-		Integer.class,
 		Double.class, 
 		Double.class, 
 		Double.class
 	};
 	
 	public final static int[] FIELD_LENGTH = {
-		8, 8, 16, 16, 16, 16, 64, 8, 8, 8, 8, 8
+		8, 8, 16, 16, 64, 8, 8, 8, 8
 	};
 	
 	
@@ -185,14 +163,6 @@ public abstract class Product {
 
 		public String getType() {
 			return product.getType();
-		}
-
-		public String getBrand() {
-			return product.getBrand();
-		}
-
-		public String getModel() {
-			return product.getModel();
 		}
 
 		public Double getNewPrice() {
@@ -237,9 +207,7 @@ public abstract class Product {
 				this.getInstant(),
 				this.getCode(), 
 				this.getCategory(), 
-				this.getType(), 
-				this.getBrand(), 
-				this.getModel(), 
+				this.getType(),
 				this.getOldPrice(), 
 				this.getNewPrice(), 
 				this.getDiffPriceRatio(),
@@ -249,15 +217,13 @@ public abstract class Product {
 		}
 		
 		
-		public final static int FIELD_COUNT = 11;
+		public final static int FIELD_COUNT = 9;
 
 		public final static String[] FIELD_LABELS = {
 			"Publikimi", 
 			"Kodi", 
-			"Kategoria", 
-			"Tipi", 
-			"Marka", 
-			"Modeli", 
+			"Sektori", 
+			"Kategoria",  
 			"Cmimi", 
 			"Oferta", 
 			"Skonto", 
@@ -270,8 +236,6 @@ public abstract class Product {
 			String.class, 
 			String.class, 
 			String.class, 
-			String.class, 
-			String.class, 
 			Double.class, 
 			Double.class, 
 			Double.class, 
@@ -280,7 +244,7 @@ public abstract class Product {
 		};
 
 		public final static int[] FIELD_LENGTH = {
-			16, 8, 16, 16, 16, 16, 8, 8, 8, 8,  5
+			16, 8, 16, 16, 8, 8, 8, 8,  5
 		};
 		
 	}

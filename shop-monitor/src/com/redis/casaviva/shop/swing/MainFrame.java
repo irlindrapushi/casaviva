@@ -85,6 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
           jButton2.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
           jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/price-label-32.png"))); // NOI18N
           jButton2.setText("Etiketat");
+          jButton2.setEnabled(false);
           jButton2.setFocusable(false);
           jButton2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
           jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -211,10 +212,17 @@ public class MainFrame extends javax.swing.JFrame {
      private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
           File temp = new File("./temp");
 		temp.mkdirs();
+		
+		this.jButton4ActionPerformed(null);
      }//GEN-LAST:event_formWindowOpened
 
      private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
           File temp = new File("./temp");
+		if(!temp.exists())
+			return;
+		if(!temp.isDirectory())
+			return;
+		
 		String[]entries = temp.list();
 		for(String s: entries){
 		    File currentFile = new File(temp.getPath(), s);

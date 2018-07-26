@@ -247,16 +247,6 @@
                           <Renderer/>
                         </Column>
                         <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title value="Marka"/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title value="Modeli"/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                           <Title value="Cmimi"/>
                           <Editor/>
                           <Renderer/>
@@ -296,7 +286,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xd;&#xa;int width = this.getPreferredSize().width;&#xd;&#xa;for(int col = 0; col &lt; Product.SpecialLabel.FIELD_COUNT; col++){&#xd;&#xa;&#x9;table.packColumn(col, width * tableModel.getColumnWidth(col));&#xd;&#xa;&#x9;&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));&#xd;&#xa;table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(6));&#xd;&#xa;table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(7));&#xd;&#xa;table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(8));&#xd;&#xa;table.getColumn(9).setCellRenderer(tableModel.getColumnTableCellRenderer(9));&#xd;&#xa;//this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());&#xd;&#xa;&#xd;&#xa;"/>
+                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="&#xd;&#xa;int width = this.getPreferredSize().width;&#xd;&#xa;for(int col = 0; col &lt; Product.SpecialLabel.FIELD_COUNT; col++){&#xd;&#xa;&#x9;table.packColumn(col, width * tableModel.getColumnWidth(col));&#xd;&#xa;&#x9;&#xd;&#xa;}&#xd;&#xa;&#xd;&#xa;table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));&#xd;&#xa;table.getColumn(5).setCellRenderer(tableModel.getColumnTableCellRenderer(6));&#xd;&#xa;table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(7));&#xd;&#xa;table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(8));&#xd;&#xa;table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(9));&#xd;&#xa;//this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());&#xd;&#xa;&#xd;&#xa;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>

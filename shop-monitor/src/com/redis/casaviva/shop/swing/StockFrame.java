@@ -80,10 +80,7 @@ public class StockFrame extends javax.swing.JInternalFrame {
 	private void filterTableRows(){
 		List<RowFilter<ProductTableModel, Integer>> filter = new ArrayList<>();
 		
-		filter.add(RowFilter.regexFilter("(?i)" + jXSearchField1.getText(), 0, 1, 2));
-		
-		if(jCheckBox3.isSelected())
-			filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, Double.MIN_VALUE, 16));
+		filter.add(RowFilter.regexFilter("(?i)" + jXSearchField1.getText(), 0, 1, 2, 3));
 		
 		this.jXTable1.setRowFilter(RowFilter.andFilter(filter));
 	}
@@ -97,7 +94,6 @@ public class StockFrame extends javax.swing.JInternalFrame {
           filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
           jXSearchField1 = new org.jdesktop.swingx.JXSearchField();
           filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-          jCheckBox3 = new javax.swing.JCheckBox();
           filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
           jScrollPane1 = new javax.swing.JScrollPane();
           jXTable1 = new org.jdesktop.swingx.JXTable();
@@ -148,24 +144,6 @@ public class StockFrame extends javax.swing.JInternalFrame {
           });
           jToolBar1.add(jXSearchField1);
           jToolBar1.add(filler1);
-
-          jCheckBox3.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-          jCheckBox3.setForeground(new java.awt.Color(0, 151, 0));
-          jCheckBox3.setSelected(true);
-          jCheckBox3.setText("Gj. Poz.");
-          jCheckBox3.setToolTipText("Listo artikujt me gjendje pozitive!");
-          jCheckBox3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-          jCheckBox3.setFocusable(false);
-          jCheckBox3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-          jCheckBox3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-          jCheckBox3.setIconTextGap(1);
-          jCheckBox3.setOpaque(false);
-          jCheckBox3.addChangeListener(new javax.swing.event.ChangeListener() {
-               public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                    jCheckBox3StateChanged(evt);
-               }
-          });
-          jToolBar1.add(jCheckBox3);
           jToolBar1.add(filler2);
 
           getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_END);
@@ -175,6 +153,15 @@ public class StockFrame extends javax.swing.JInternalFrame {
           jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());
           jXTable1.setRowHeight(24);
           jScrollPane1.setViewportView(jXTable1);
+          if (jXTable1.getColumnModel().getColumnCount() > 0) {
+               jXTable1.getColumnModel().getColumn(0).setHeaderValue("Kodi");
+               jXTable1.getColumnModel().getColumn(1).setHeaderValue("Barkodi");
+               jXTable1.getColumnModel().getColumn(2).setHeaderValue("Pershkrimi");
+               jXTable1.getColumnModel().getColumn(3).setHeaderValue("Njesia");
+               jXTable1.getColumnModel().getColumn(4).setHeaderValue("Qendra");
+               jXTable1.getColumnModel().getColumn(5).setHeaderValue("Pajtoni");
+               jXTable1.getColumnModel().getColumn(6).setHeaderValue("Total");
+          }
           this.jXTable1.setDefaultRenderer(Integer.class, new com.redis.casaviva.shop.swing.renderer.IntegerCellRenderer());
 
           this.jXTable1.packColumn(0, 100);
@@ -184,15 +171,6 @@ public class StockFrame extends javax.swing.JInternalFrame {
           this.jXTable1.packColumn(4, 50);
           this.jXTable1.packColumn(5, 50);
           this.jXTable1.packColumn(6, 50);
-          this.jXTable1.packColumn(7, 50);
-          this.jXTable1.packColumn(8, 50);
-          this.jXTable1.packColumn(9, 50);
-          this.jXTable1.packColumn(10, 50);
-          this.jXTable1.packColumn(11, 50);
-          this.jXTable1.packColumn(12, 50);
-          this.jXTable1.packColumn(13, 50);
-          this.jXTable1.packColumn(14, 50);
-          this.jXTable1.packColumn(15, 50);
 
           getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -247,10 +225,6 @@ public class StockFrame extends javax.swing.JInternalFrame {
 		catch (IOException ex) {Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);}
      }//GEN-LAST:event_jButton2ActionPerformed
 
-     private void jCheckBox3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox3StateChanged
-          filterTableRows();
-     }//GEN-LAST:event_jCheckBox3StateChanged
-
      private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
           this.jButton1ActionPerformed(null);
      }//GEN-LAST:event_formInternalFrameOpened
@@ -269,7 +243,6 @@ public class StockFrame extends javax.swing.JInternalFrame {
      private javax.swing.Box.Filler filler4;
      private javax.swing.JButton jButton1;
      private javax.swing.JButton jButton2;
-     private javax.swing.JCheckBox jCheckBox3;
      private javax.swing.JProgressBar jProgressBar1;
      private javax.swing.JScrollPane jScrollPane1;
      private javax.swing.JToolBar jToolBar1;

@@ -76,8 +76,6 @@ public class ProductFrame extends javax.swing.JInternalFrame {
 		
 		jCheckBox1.setEnabled(false); jCheckBox2.setEnabled(false); jCheckBox3.setEnabled(false); 
 		
-		jCheckBox1.setSelected(false); jCheckBox2.setSelected(false); jCheckBox3.setSelected(true);
-		
 		jXSearchField1.setText(""); jXSearchField1.setEnabled(false);
 	}
 	
@@ -105,16 +103,14 @@ public class ProductFrame extends javax.swing.JInternalFrame {
 	private void filterTableRows(){
 		List<RowFilter<ProductTableModel, Integer>> filter = new ArrayList<>();
 		
-		filter.add(RowFilter.regexFilter("(?i)" + jXSearchField1.getText(), 0, 1, 6));
+		filter.add(RowFilter.regexFilter("(?i)" + jXSearchField1.getText(), 0, 1, 4));
 		
 		if(!selectedCategory.isEmpty()) filter.add(RowFilter.regexFilter("^" + selectedCategory + "$", 2));
 		if(!selectedType.isEmpty()) filter.add(RowFilter.regexFilter("^" + selectedType + "$", 3));
-		if(!selectedBrand.isEmpty()) filter.add(RowFilter.regexFilter("^" + selectedBrand + "$", 4));
-		if(!selectedModel.isEmpty()) filter.add(RowFilter.regexFilter("^" + selectedModel + "$", 5));
 		
-		if(!jCheckBox1.isSelected()) filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, -Double.MIN_VALUE, 11));
-		if(!jCheckBox2.isSelected()) filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.NOT_EQUAL, 0, 11));
-		if(!jCheckBox3.isSelected()) filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.BEFORE, Double.MIN_VALUE, 11));
+		if(!jCheckBox1.isSelected()) filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, -Double.MIN_VALUE, 8));
+		if(!jCheckBox2.isSelected()) filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.NOT_EQUAL, 0, 8));
+		if(!jCheckBox3.isSelected()) filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.BEFORE, Double.MIN_VALUE, 8));
 		
 		this.jXTable1.setRowFilter(RowFilter.andFilter(filter));
 	}
@@ -211,6 +207,7 @@ public class ProductFrame extends javax.swing.JInternalFrame {
 
           jCheckBox1.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
           jCheckBox1.setForeground(java.awt.Color.red);
+          jCheckBox1.setSelected(true);
           jCheckBox1.setText("Gj. Neg.");
           jCheckBox1.setToolTipText("Listo artikujt me gjendje negative!");
           jCheckBox1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -229,6 +226,7 @@ public class ProductFrame extends javax.swing.JInternalFrame {
 
           jCheckBox2.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
           jCheckBox2.setForeground(java.awt.Color.orange);
+          jCheckBox2.setSelected(true);
           jCheckBox2.setText("Gj. Zero");
           jCheckBox2.setToolTipText("Listo artikujt me gjendje zero");
           jCheckBox2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -267,8 +265,9 @@ public class ProductFrame extends javax.swing.JInternalFrame {
           jPanel2.add(jToolBar1, java.awt.BorderLayout.PAGE_END);
 
           jXTable1.setModel(productTableModel1);
-          jXTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
           jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());
+          jXTable1.setRowHeight(32);
+          jXTable1.setShowVerticalLines(false);
           jScrollPane1.setViewportView(jXTable1);
           int width = this.getPreferredSize().width;
           for(int col = 0; col < productTableModel1.getColumnCount(); col++){
@@ -302,7 +301,6 @@ public class ProductFrame extends javax.swing.JInternalFrame {
 
           jProgressBar1.setBorderPainted(false);
           jProgressBar1.setIndeterminate(true);
-          jProgressBar1.setOpaque(false);
           jToolBar3.add(jProgressBar1);
           jToolBar3.add(filler4);
 

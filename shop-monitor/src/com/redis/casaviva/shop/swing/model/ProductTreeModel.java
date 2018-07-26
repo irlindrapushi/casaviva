@@ -7,12 +7,8 @@ package com.redis.casaviva.shop.swing.model;
 
 import com.redis.casaviva.shop.dc.Product;
 import com.redis.casaviva.shop.dc.Warehouse;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -74,34 +70,6 @@ public class ProductTreeModel extends DefaultTreeModel{
 				child = new DefaultMutableTreeNode(p.getType());
 				parent.add(child);
 			}
-			parent = child; child = null;
-			
-			
-			//brand
-			for(int i = 0; i<parent.getChildCount(); i++){
-				if(((DefaultMutableTreeNode) parent.getChildAt(i)).getUserObject().equals(p.getBrand())){
-					child = (DefaultMutableTreeNode) parent.getChildAt(i);
-					break;
-				}
-			}
-			if(child == null){
-				child = new DefaultMutableTreeNode(p.getBrand());
-				parent.add(child);
-			}
-			parent = child; child = null;
-			
-			//model
-			for(int i = 0; i<parent.getChildCount(); i++){
-				if(((DefaultMutableTreeNode) parent.getChildAt(i)).getUserObject().equals(p.getModel())){
-					child = (DefaultMutableTreeNode) parent.getChildAt(i);
-					break;
-				}
-			}
-			if(child == null){
-				child = new DefaultMutableTreeNode(p.getModel());
-				parent.add(child);
-			}
-			
 			
 		}
 		

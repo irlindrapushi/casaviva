@@ -124,8 +124,6 @@ public class LabelHTMLExport {
 		htmlDiv = htmlDiv.replace("_CMIM_A_","" + cmimiA);
 		htmlDiv = htmlDiv.replace("_CMIM_B_","" + cmimiB);
 		htmlDiv = htmlDiv.replace("_TIPI_", label.getType() == null ? "" : label.getType());
-		htmlDiv = htmlDiv.replace("_MARKA_", label.getBrand() == null ? "" : label.getBrand());
-		htmlDiv = htmlDiv.replace("_MODELI_", label.getModel() == null ? "" : label.getModel());
 		
 		return htmlDiv;
 	}
