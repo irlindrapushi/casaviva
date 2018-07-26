@@ -5,20 +5,16 @@
             <url>src/com/redis/casaviva/shop/swing/labels/TableModelLabels.java</url>
             <bookmark id="1">
                 <name/>
-                <line>39</line>
+                <line>40</line>
                 <key/>
             </bookmark>
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/mssql/StockSQL.java</file>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/utils/Dataset.java</file>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/FrameStock.java</file>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/core/Stock.java</file>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/labels/FrameLabels.java</file>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/mssql/ArticleSQL.java</file>
-            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/labels/TableModelLabels.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/ProductFrame.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Warehouse.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/sql/SqlProduct.java</file>
         </group>
     </open-files>
 </project-private>
