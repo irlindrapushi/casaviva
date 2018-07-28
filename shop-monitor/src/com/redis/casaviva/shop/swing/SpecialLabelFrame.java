@@ -1,6 +1,5 @@
 package com.redis.casaviva.shop.swing;
 
-import com.redis.casaviva.shop.dc.Product;
 import com.redis.casaviva.shop.dc.Warehouse;
 import com.redis.casaviva.shop.export.LabelHTMLExport;
 import com.redis.casaviva.shop.swing.model.ProductTableModel;
@@ -41,10 +40,10 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
 	private void filterTableRows(){
 		List<RowFilter<ProductTableModel, Integer>> filter = new ArrayList<>();
 		
-		filter.add(RowFilter.regexFilter("(?i)" + jXSearchField1.getText(), 1, 2, 3, 4, 5, 6));
+		filter.add(RowFilter.regexFilter("(?i)" + jXSearchField1.getText(), 0, 1, 2, 3));
 		
 		if(jCheckBox3.isSelected()) 
-			filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, Double.MIN_VALUE, 9));
+			filter.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, Double.MIN_VALUE, 7));
 		
 		this.table.setRowFilter(RowFilter.andFilter(filter));
 	}
@@ -53,8 +52,8 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
      // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
      private void initComponents() {
 
-          tableModel = new com.redis.casaviva.shop.swing.model.SpecialLabelTableModel();
           treeModel = new com.redis.casaviva.shop.swing.model.SpecialLabelTreeModel();
+          tableModel = new com.redis.casaviva.shop.swing.model.SpecialLabelTableModel();
           jSplitPane1 = new javax.swing.JSplitPane();
           jPanel1 = new javax.swing.JPanel();
           jScrollPane2 = new javax.swing.JScrollPane();
@@ -162,34 +161,35 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           jPanel2.add(jToolBar1, java.awt.BorderLayout.SOUTH);
 
           table.setModel(tableModel);
-          table.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
           table.setHighlighters(HighlighterFactory.createSimpleStriping());
           table.setRowHeight(24);
           table.setShowVerticalLines(false);
           jScrollPane1.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
+               table.getColumnModel().getColumn(0).setPreferredWidth(100);
                table.getColumnModel().getColumn(0).setHeaderValue("Publikimi");
+               table.getColumnModel().getColumn(1).setPreferredWidth(50);
                table.getColumnModel().getColumn(1).setHeaderValue("Kodi");
+               table.getColumnModel().getColumn(2).setPreferredWidth(150);
                table.getColumnModel().getColumn(2).setHeaderValue("Kategoria");
+               table.getColumnModel().getColumn(3).setPreferredWidth(150);
                table.getColumnModel().getColumn(3).setHeaderValue("Tipi");
+               table.getColumnModel().getColumn(4).setPreferredWidth(50);
                table.getColumnModel().getColumn(4).setHeaderValue("Cmimi");
+               table.getColumnModel().getColumn(5).setPreferredWidth(50);
                table.getColumnModel().getColumn(5).setHeaderValue("Oferta");
+               table.getColumnModel().getColumn(6).setPreferredWidth(30);
                table.getColumnModel().getColumn(6).setHeaderValue("Skonto");
+               table.getColumnModel().getColumn(7).setPreferredWidth(10);
                table.getColumnModel().getColumn(7).setHeaderValue("Gjendje");
                table.getColumnModel().getColumn(8).setHeaderValue("");
+               table.getColumnModel().getColumn(9).setHeaderValue("");
           }
-
-          int width = this.getPreferredSize().width;
-          for(int col = 0; col < Product.SpecialLabel.FIELD_COUNT; col++){
-               table.packColumn(col, width * tableModel.getColumnWidth(col));
-
-          }
-
           table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));
-          table.getColumn(5).setCellRenderer(tableModel.getColumnTableCellRenderer(6));
-          table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(7));
-          table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(8));
-          table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(9));
+          table.getColumn(4).setCellRenderer(tableModel.getColumnTableCellRenderer(4));
+          table.getColumn(5).setCellRenderer(tableModel.getColumnTableCellRenderer(5));
+          table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(6));
+          table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(7));
           //this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());
 
           jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -354,12 +354,12 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
 
      private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
           for(int i=0; i<this.table.getRowCount();i++)
-          table.setValueAt(false, i, 10);
+          table.setValueAt(false, i, 7);
      }//GEN-LAST:event_jButton4ActionPerformed
 
      private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
           for(int i=0; i<this.table.getRowCount();i++)
-          table.setValueAt(true, i, 10);
+          table.setValueAt(true, i, 7);
      }//GEN-LAST:event_jButton5ActionPerformed
 
      // Variables declaration - do not modify//GEN-BEGIN:variables

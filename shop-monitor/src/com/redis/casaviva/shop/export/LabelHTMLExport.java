@@ -123,7 +123,7 @@ public class LabelHTMLExport {
 		htmlDiv = htmlDiv.replace("_OFERTE_B_","" + ofertaB);
 		htmlDiv = htmlDiv.replace("_CMIM_A_","" + cmimiA);
 		htmlDiv = htmlDiv.replace("_CMIM_B_","" + cmimiB);
-		htmlDiv = htmlDiv.replace("_TIPI_", label.getType() == null ? "" : label.getType());
+		htmlDiv = htmlDiv.replace("_TIPI_", label.getCateogory() == null ? "" : label.getCateogory());
 		
 		return htmlDiv;
 	}

@@ -48,6 +48,19 @@ public class ProductTreeModel extends DefaultTreeModel{
 			//category
 			DefaultMutableTreeNode child = null;
 			for(int i = 0; i<parent.getChildCount(); i++){
+				if(((DefaultMutableTreeNode) parent.getChildAt(i)).getUserObject().equals(p.getSector())){
+					child = (DefaultMutableTreeNode) parent.getChildAt(i);
+					break;
+				}
+			}
+			if(child == null){
+				child = new DefaultMutableTreeNode(p.getSector());
+				parent.add(child);
+			}
+			parent = child; child = null;
+			
+			//type
+			for(int i = 0; i<parent.getChildCount(); i++){
 				if(((DefaultMutableTreeNode) parent.getChildAt(i)).getUserObject().equals(p.getCategory())){
 					child = (DefaultMutableTreeNode) parent.getChildAt(i);
 					break;
@@ -55,19 +68,6 @@ public class ProductTreeModel extends DefaultTreeModel{
 			}
 			if(child == null){
 				child = new DefaultMutableTreeNode(p.getCategory());
-				parent.add(child);
-			}
-			parent = child; child = null;
-			
-			//type
-			for(int i = 0; i<parent.getChildCount(); i++){
-				if(((DefaultMutableTreeNode) parent.getChildAt(i)).getUserObject().equals(p.getType())){
-					child = (DefaultMutableTreeNode) parent.getChildAt(i);
-					break;
-				}
-			}
-			if(child == null){
-				child = new DefaultMutableTreeNode(p.getType());
 				parent.add(child);
 			}
 			
