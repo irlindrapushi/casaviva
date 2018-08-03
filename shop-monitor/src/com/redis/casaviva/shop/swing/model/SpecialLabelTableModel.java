@@ -9,7 +9,6 @@ import com.redis.casaviva.shop.dc.Product;
 import static com.redis.casaviva.shop.dc.Product.SpecialLabel.FIELD_CLASSES;
 import static com.redis.casaviva.shop.dc.Product.SpecialLabel.FIELD_COUNT;
 import static com.redis.casaviva.shop.dc.Product.SpecialLabel.FIELD_LABELS;
-import static com.redis.casaviva.shop.dc.Product.SpecialLabel.FIELD_LENGTH;
 import java.awt.Component;
 import java.text.NumberFormat;
 import java.time.Instant;
@@ -58,15 +57,6 @@ public class SpecialLabelTableModel extends DefaultTableModel{
 		return FIELD_CLASSES[columnIndex];
 	}
 	
-	public int getColumnWidth(int columnIndex){		
-		int maxLength = 0;
-
-		for(int length : FIELD_LENGTH)
-			maxLength += length;
-
-		return 100 * FIELD_LENGTH[columnIndex] / maxLength;
-	}
-	
 	
 	public TableCellRenderer getColumnTableCellRenderer(int columnIndex){
 		
@@ -81,14 +71,14 @@ public class SpecialLabelTableModel extends DefaultTableModel{
 					
 					setHorizontalAlignment(RIGHT);
 					
-					if(column == 6 || column == 7){
+					if(column == 5 || column == 6){
 						setText(NumberFormat.getNumberInstance().format(value));
 					}
-					if(column == 8){
+					if(column == 7){
 						NumberFormat.getPercentInstance().format(value);
 						setText(NumberFormat.getPercentInstance().format(value));
 					}
-					if(column==9){
+					if(column==8){
 						if(((Number) value).doubleValue() < -Double.MIN_VALUE)
 							setText("<html><p color='red'>"+((Number) value).intValue()+"</html>");
 						else if(((Number) value).doubleValue() > Double.MIN_VALUE)

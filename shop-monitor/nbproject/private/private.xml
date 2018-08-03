@@ -11,6 +11,18 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/ProductFrame.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/model/SpecialLabelTableModel.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/model/SpecialLabelTreeModel.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/SpecialLabelFrame.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Product.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Warehouse.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/sql/SqlProduct.java</file>
+        </group>
+>>>>>>> de937f8585da3106021b6eebb92175a51522648c
     </open-files>
 </project-private>

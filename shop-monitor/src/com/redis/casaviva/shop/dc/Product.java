@@ -18,26 +18,26 @@ import java.util.Map;
  */
 public abstract class Product {
 
-	private final String code, barcode, category, type, description, unit;
+	private final String code, barcode, sector, category, description, unit;
 
 
 	/**
 	 * 
 	 * @param code
 	 * @param barcode
+	 * @param sector
 	 * @param category
-	 * @param type
 	 * @param brand
 	 * @param model
 	 * @param description
 	 * @param unit
 	 * @param warranty
 	 */
-	public Product(String code, String barcode, String category, String type, String description, String unit) {
+	public Product(String code, String barcode, String sector, String category, String description, String unit) {
 		this.code = code;
 		this.barcode = barcode;
+		this.sector = sector;
 		this.category = category;
-		this.type = type;
 		this.description = description;
 		this.unit = unit;
 	}
@@ -50,12 +50,12 @@ public abstract class Product {
 		return barcode;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getSector() {
+		return sector;
 	}
 
-	public String getType() {
-		return type;
+	public String getCategory() {
+		return category;
 	}
 
 	public String getDescription() {
@@ -99,7 +99,7 @@ public abstract class Product {
 	
 	public Object[] toArray(){
 		return new Object[]{
-			this.getCode(), this.getBarcode(), this.getCategory(), this.getType(), this.getDescription(), this.getUnit(), this.getOldPrice(), this.getNewPrice(), this.getStock()
+			this.getCode(), this.getBarcode(), this.getSector(), this.getCategory(), this.getDescription(), this.getUnit(), this.getOldPrice(), this.getNewPrice(), this.getStock()
 		};
 	}
 	
@@ -112,8 +112,8 @@ public abstract class Product {
 	public final static String[] FIELD_NAMES = {
 		"code", 
 		"barcode", 
-		"category", 
-		"type",
+		"sector", 
+		"category",
 		"description", 
 		"unit",
 		"price",
@@ -147,6 +147,7 @@ public abstract class Product {
 	
 	
 	public static class SpecialLabel{
+		
 		private final Product product;
 
 		public SpecialLabel(Product product) {
@@ -156,13 +157,21 @@ public abstract class Product {
 		public String getCode() {
 			return product.getCode();
 		}
-
-		public String getCategory() {
-			return product.getCategory();
+		
+		public String getBarcode() {
+			return product.getBarcode();
 		}
 
-		public String getType() {
-			return product.getType();
+		public String getSector() {
+			return product.getSector();
+		}
+
+		public String getCateogory() {
+			return product.getCategory();
+		}
+		
+		public String getDescription() {
+			return product.getDescription();
 		}
 
 		public Double getNewPrice() {
@@ -205,9 +214,11 @@ public abstract class Product {
 		public Object[] toArray(){
 			return new Object[]{
 				this.getInstant(),
-				this.getCode(), 
-				this.getCategory(), 
-				this.getType(),
+				this.getCode(),
+				this.getBarcode(),
+				this.getSector(),
+				this.getDescription(),
+				this.getCateogory(),
 				this.getOldPrice(), 
 				this.getNewPrice(), 
 				this.getDiffPriceRatio(),
@@ -217,13 +228,15 @@ public abstract class Product {
 		}
 		
 		
-		public final static int FIELD_COUNT = 9;
+		public final static int FIELD_COUNT = 10;
 
 		public final static String[] FIELD_LABELS = {
 			"Publikimi", 
 			"Kodi", 
+			"Barkodi",
 			"Sektori", 
-			"Kategoria",  
+			"Kategoria",
+			"Pershkrimi",
 			"Cmimi", 
 			"Oferta", 
 			"Skonto", 
@@ -233,20 +246,17 @@ public abstract class Product {
 
 		public final static Class[] FIELD_CLASSES = {
 			Instant.class, 
+			String.class, 			
+			String.class, 			
 			String.class, 
-			String.class, 
+			String.class,  
 			String.class, 
 			Double.class, 
 			Double.class, 
 			Double.class, 
 			Double.class,
 			Boolean.class
-		};
-
-		public final static int[] FIELD_LENGTH = {
-			16, 8, 16, 16, 8, 8, 8, 8,  5
-		};
-		
+		};		
 	}
 	
 	public static class PriceLabel extends HashMap<String, String>{
