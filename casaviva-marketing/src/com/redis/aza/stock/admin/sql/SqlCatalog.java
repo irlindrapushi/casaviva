@@ -72,6 +72,7 @@ public final class SqlCatalog {
 			PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT TOP 1 "
 				+ "	code, "
+				+ "	barcode, "
 				+ "	category, "
 				+ "	description, "
 				+ "	supplier, "
@@ -92,7 +93,8 @@ public final class SqlCatalog {
 			
 			if(rs.next()) {
 				item = new Catalog.Item(
-					rs.getString("code"), 
+					rs.getString("code"),
+					rs.getString("barcode"),
 					rs.getString("category"),
 					rs.getString("description"),
 					rs.getString("supplier"),
@@ -120,6 +122,7 @@ public final class SqlCatalog {
 		try(PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT TOP 1 "
 				+ "	code, "
+				+ "	barcode, "
 				+ "	category, "
 				+ "	description, "
 				+ "	supplier, "
@@ -141,6 +144,7 @@ public final class SqlCatalog {
 			if(rs.next()) {
 				item = new Catalog.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"), 
 					rs.getString("category"),
 					rs.getString("description"),
 					rs.getString("supplier"),
@@ -162,60 +166,6 @@ public final class SqlCatalog {
 		return item;
 	}
 	
-	public static List<Catalog.Feature> selectFeatures(Connection cn, String itemCode) {
-		List<Catalog.Feature> features = new ArrayList();
-		
-		try(PreparedStatement ps = cn.prepareStatement("SELECT [index],[name],[value] FROM [Feature] WHERE [item] = ? ORDER BY [index] ASC")){
-			
-			ps.setString(1, itemCode);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				features.add(
-					new Catalog.Feature(
-						rs.getInt("index"), 
-						rs.getString("name"), 
-						rs.getString("value")
-					)
-				);
-			}
-		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlCatalog.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
-		return features;
-	}
-	
-	public static List<Catalog.Feature> selectFeatures(String itemCode) {
-		List<Catalog.Feature> features = new ArrayList();
-		
-		try(Connection cn = SqlServer.getConnection()){
-			PreparedStatement ps = cn.prepareStatement(""
-				+ "SELECT [index],[name],[value] FROM [Feature] WHERE [item] = ? ORDER BY [index] ASC");
-			
-			ps.setString(1, itemCode);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				features.add(
-					new Catalog.Feature(
-						rs.getInt("index"), 
-						rs.getString("name"), 
-						rs.getString("value")
-					)
-				);
-			}
-		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlCatalog.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
-		return features;
-	}
-	
 	private static boolean forEach(Consumer<Catalog.Item> consumer) {
 		boolean success = false;
 		
@@ -223,6 +173,7 @@ public final class SqlCatalog {
 			PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT "
 				+ "	code, "
+				+ "	barcode, "
 				+ "	category, "
 				+ "	description, "
 				+ "	supplier, "
@@ -242,6 +193,7 @@ public final class SqlCatalog {
 			while(rs.next()) {
 				Catalog.Item item = new Catalog.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"), 
 					rs.getString("category"),
 					rs.getString("description"),
 					rs.getString("supplier"),
