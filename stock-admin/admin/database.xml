@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>Last Update: 2018-07-28T23:41:46.323Z</comment>
+	<entry key="code">L86724204J</entry>
+	<entry key="name">CASAVIVA 2018 SHPK</entry>
+	<entry key="address">L. Kushtrimi, Rr. Tranballkanike, Vlore (AL)</entry>
+	<entry key="phone">+355 68 20 80 773</entry>
+	<entry key="website">www.casaviva.al</entry>
+	<entry key="email">info@casaviva.al</entry>
+	
+	<entry key="url">jdbc:sqlserver://217.21.146.248:3306;databaseName=L86724204J</entry>
+	<entry key="username">L86724204J</entry>
+	<entry key="password">R6D33LTQ</entry>
+</properties>
