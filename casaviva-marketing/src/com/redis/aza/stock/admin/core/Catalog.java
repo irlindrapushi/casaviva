@@ -106,28 +106,4 @@ public interface Catalog {
 		}	
 		
 	}
-	
-	public static class Feature {
-		private final Integer index;
-		private final String name;
-		private final String value;
-
-		public Feature(Integer index, String name, String value) {
-			this.index = index;
-			this.name = name;
-			this.value = value;
-		}
-
-		public Integer getIndex() {
-			return index;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public String getValue() {
-			return value;
-		}
-	}
 }

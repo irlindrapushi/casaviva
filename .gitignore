@@ -43,3 +43,10 @@
 /casaviva-marketing/build/
 /casaviva-marketing/dist/
 casaviva-marketing/config.properties
+/casaviva-monitor/nbproject/private/
+/casaviva-monitor/dist/
+/casaviva-monitor/build/
+/catalog/nbproject/private/
+/catalog/build/
+/redis-stock-core/nbproject/private/
+/catalog/dist/

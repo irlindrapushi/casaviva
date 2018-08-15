@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
-        <file>
-            <url>src/com/redis/casaviva/shop/swing/labels/TableModelLabels.java</url>
-            <bookmark id="1">
-                <name/>
-                <line>40</line>
-                <key/>
-            </bookmark>
-        </file>
-    </editor-bookmarks>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
-        <group/>
-=======
         <group>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/ProductFrame.java</file>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/model/SpecialLabelTableModel.java</file>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/model/SpecialLabelTreeModel.java</file>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/swing/SpecialLabelFrame.java</file>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Product.java</file>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Warehouse.java</file>
-            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/sql/SqlProduct.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/stock/Stock.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/stock/sql/StockStateImpl.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/utils/sets/Set.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/stock/sql/StockImpl.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/stock/Item.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/History.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/stock/Event.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Warehouse.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/stock/StockState.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Stock.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Item.java</file>
+            <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/utils/sets/History.java</file>
         </group>
->>>>>>> de937f8585da3106021b6eebb92175a51522648c
     </open-files>
 </project-private>

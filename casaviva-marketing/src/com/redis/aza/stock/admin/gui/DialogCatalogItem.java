@@ -63,13 +63,6 @@ public class DialogCatalogItem extends javax.swing.JDialog {
 			JFreeChart chart = ChartFactory.createPieChart( null, dataset, true, true, false);
 			ChartPanel chartPanel = new ChartPanel(chart);
 			this.panelPieHost.add(chartPanel);
-			
-			((DefaultTableModel) this.tableFeatures.getModel()).setRowCount(0);
-			SqlCatalog.selectFeatures(cn, itemCode).forEach( feature -> {
-				Object[] row = new Object[]{feature.getName(), feature.getValue()};
-				((DefaultTableModel) this.tableFeatures.getModel()).addRow(row);
-			});
-			this.tableFeatures.packAll();
 		}
 		catch (SQLException ex) {
 			Logger.getLogger(DialogCatalogItem.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,12 +100,10 @@ public class DialogCatalogItem extends javax.swing.JDialog {
           jLabel9 = new javax.swing.JLabel();
           fieldSpecial = new javax.swing.JFormattedTextField();
           jLabel14 = new javax.swing.JLabel();
-          jScrollPane1 = new javax.swing.JScrollPane();
-          tableFeatures = new org.jdesktop.swingx.JXTable();
           panelPieHost = new javax.swing.JPanel();
 
           setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-          setPreferredSize(new java.awt.Dimension(650, 650));
+          setPreferredSize(new java.awt.Dimension(450, 450));
 
           jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -163,13 +154,13 @@ public class DialogCatalogItem extends javax.swing.JDialog {
           fieldAvgCost.setText("0");
 
           jLabel6.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-          jLabel6.setText("EUR");
+          jLabel6.setText("ALL");
 
           jLabel11.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-          jLabel11.setText("EUR");
+          jLabel11.setText("ALL");
 
           jLabel12.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-          jLabel12.setText("EUR");
+          jLabel12.setText("ALL");
 
           fieldWholsale.setEditable(false);
           fieldWholsale.setColumns(7);
@@ -318,39 +309,6 @@ public class DialogCatalogItem extends javax.swing.JDialog {
                     .addContainerGap())
           );
 
-          tableFeatures.setModel(new javax.swing.table.DefaultTableModel(
-               new Object [][] {
-                    {null, null}
-               },
-               new String [] {
-                    "", ""
-               }
-          ) {
-               Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class
-               };
-               boolean[] canEdit = new boolean [] {
-                    false, false
-               };
-
-               public Class getColumnClass(int columnIndex) {
-                    return types [columnIndex];
-               }
-
-               public boolean isCellEditable(int rowIndex, int columnIndex) {
-                    return canEdit [columnIndex];
-               }
-          });
-          tableFeatures.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-          tableFeatures.setShowVerticalLines(false);
-          tableFeatures.getTableHeader().setResizingAllowed(false);
-          tableFeatures.getTableHeader().setReorderingAllowed(false);
-          jScrollPane1.setViewportView(tableFeatures);
-          if (tableFeatures.getColumnModel().getColumnCount() > 0) {
-               tableFeatures.getColumnModel().getColumn(0).setPreferredWidth(50);
-               tableFeatures.getColumnModel().getColumn(1).setPreferredWidth(50);
-          }
-
           panelPieHost.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gjendja ne magazina", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
           panelPieHost.setLayout(new java.awt.BorderLayout());
 
@@ -361,20 +319,15 @@ public class DialogCatalogItem extends javax.swing.JDialog {
                .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                         .addComponent(panelPieHost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                         .addGroup(layout.createSequentialGroup()
-                              .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                              .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)))
+                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                         .addComponent(panelPieHost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addContainerGap())
           );
           layout.setVerticalGroup(
                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(panelPieHost, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                     .addContainerGap())
@@ -408,8 +361,6 @@ public class DialogCatalogItem extends javax.swing.JDialog {
      private javax.swing.JLabel jLabel8;
      private javax.swing.JLabel jLabel9;
      private javax.swing.JPanel jPanel1;
-     private javax.swing.JScrollPane jScrollPane1;
      private javax.swing.JPanel panelPieHost;
-     private org.jdesktop.swingx.JXTable tableFeatures;
      // End of variables declaration//GEN-END:variables
 }

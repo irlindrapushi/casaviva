@@ -162,59 +162,7 @@ public final class SqlCatalog {
 		return item;
 	}
 	
-	public static List<Catalog.Feature> selectFeatures(Connection cn, String itemCode) {
-		List<Catalog.Feature> features = new ArrayList();
-		
-		try(PreparedStatement ps = cn.prepareStatement("SELECT [index],[name],[value] FROM [Feature] WHERE [item] = ? ORDER BY [index] ASC")){
-			
-			ps.setString(1, itemCode);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				features.add(
-					new Catalog.Feature(
-						rs.getInt("index"), 
-						rs.getString("name"), 
-						rs.getString("value")
-					)
-				);
-			}
-		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlCatalog.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
-		return features;
-	}
 	
-	public static List<Catalog.Feature> selectFeatures(String itemCode) {
-		List<Catalog.Feature> features = new ArrayList();
-		
-		try(Connection cn = SqlServer.getConnection()){
-			PreparedStatement ps = cn.prepareStatement(""
-				+ "SELECT [index],[name],[value] FROM [Feature] WHERE [item] = ? ORDER BY [index] ASC");
-			
-			ps.setString(1, itemCode);
-			
-			ResultSet rs = ps.executeQuery();
-			
-			while(rs.next()) {
-				features.add(
-					new Catalog.Feature(
-						rs.getInt("index"), 
-						rs.getString("name"), 
-						rs.getString("value")
-					)
-				);
-			}
-		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlCatalog.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
-		return features;
-	}
 	
 	private static boolean forEach(Consumer<Catalog.Item> consumer) {
 		boolean success = false;
