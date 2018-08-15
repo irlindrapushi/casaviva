@@ -25,7 +25,7 @@ public class SqlWarehouse {
 	public static Warehouse read(String code){
 		Warehouse warehouse = null;
 		
-		String QUERY = "SELECT TOP 1 name FROM Stock WHERE code = ?";
+		String QUERY = "SELECT TOP 1 name FROM Warehouse WHERE code = ?";
 		
 		try(Connection connection = SQL.getInstance().getConnection()){
 			

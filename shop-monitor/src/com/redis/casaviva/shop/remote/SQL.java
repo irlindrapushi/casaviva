@@ -81,14 +81,4 @@ public abstract class SQL {
 			public void setUserPass(String userPass) {this.preferences.put("password", userPass);}
 		};
 	}
-        
-	public static void main(String[] args) {
-		SQL sqlServer = SQL.getInstance();
-		sqlServer.setHostName("192.168.1.14");
-		sqlServer.setDatabaseName("CA_REDIS");
-		sqlServer.setPortNumber("3306");
-		sqlServer.setUserName("sa");
-		sqlServer.setUserPass("");
-        
-	}
 }

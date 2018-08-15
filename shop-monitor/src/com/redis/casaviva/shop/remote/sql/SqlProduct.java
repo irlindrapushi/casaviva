@@ -25,7 +25,7 @@ public class SqlProduct{
 
 	private static final String SQL_SELECT = ""
 		+ "SELECT p.code, p.barcode, p.category, p.type, p.description, p.unit, ISNULL(p.priceNewValue, 0) AS priceNewValue, ISNULL(p.priceOldValue, 0) AS priceOldValue, p.priceInstant, ISNULL(s.quantity, 0) AS stock "
-		+ "FROM dbo.Product p LEFT JOIN State s ON p.code = s.product AND s.warehouse = ? "
+		+ "FROM dbo.Product p LEFT JOIN Stock s ON p.code = s.item AND s.warehouse = ? "
 		+ "ORDER BY s.warehouse ASC, p.code ASC, p.priceInstant ASC;";
 	
 	public static List<Product> read(String warehouse){

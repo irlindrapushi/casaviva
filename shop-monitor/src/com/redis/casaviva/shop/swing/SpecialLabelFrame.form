@@ -5,6 +5,9 @@
     <Component class="com.redis.casaviva.shop.swing.model.SpecialLabelTreeModel" name="treeModel">
     </Component>
     <Component class="com.redis.casaviva.shop.swing.model.SpecialLabelTableModel" name="tableModel">
+      <Events>
+        <EventHandler event="tableChanged" listener="javax.swing.event.TableModelListener" parameters="javax.swing.event.TableModelEvent" handler="tableModelTableChanged"/>
+      </Events>
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -227,7 +230,7 @@
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
                         <Column maxWidth="-1" minWidth="-1" prefWidth="100" resizable="true">
-                          <Title value="Publikimi"/>
+                          <Title value="Data/Ora"/>
                           <Editor/>
                           <Renderer/>
                         </Column>
@@ -236,13 +239,33 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                          <Title value="Barkodi"/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                          <Title value="Sektori"/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                           <Title value="Kategoria"/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
-                          <Title value="Tipi"/>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="300" resizable="true">
+                          <Title value="Pershkrimi"/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                          <Title value="Njesia"/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                          <Title value="Sasia"/>
                           <Editor/>
                           <Renderer/>
                         </Column>
@@ -256,22 +279,12 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="30" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
                           <Title value="Skonto"/>
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="10" resizable="true">
-                          <Title value="Gjendje"/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                          <Title value=""/>
-                          <Editor/>
-                          <Renderer/>
-                        </Column>
-                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="20" resizable="true">
                           <Title value=""/>
                           <Editor/>
                           <Renderer/>
@@ -288,7 +301,7 @@
                     </Property>
                   </Properties>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));&#xd;&#xa;table.getColumn(4).setCellRenderer(tableModel.getColumnTableCellRenderer(4));&#xd;&#xa;table.getColumn(5).setCellRenderer(tableModel.getColumnTableCellRenderer(5));&#xd;&#xa;table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(6));&#xd;&#xa;table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(7));&#xd;&#xa;//this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());"/>
+                    <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));&#xd;&#xa;table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(7));&#xd;&#xa;table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(8));&#xd;&#xa;table.getColumn(9).setCellRenderer(tableModel.getColumnTableCellRenderer(9));&#xd;&#xa;table.getColumn(10).setCellRenderer(tableModel.getColumnTableCellRenderer(10));&#xd;&#xa;//this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());"/>
                   </AuxValues>
                 </Component>
               </SubComponents>

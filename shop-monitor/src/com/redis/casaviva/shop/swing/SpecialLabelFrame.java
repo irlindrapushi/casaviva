@@ -78,6 +78,12 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           jButton1 = new javax.swing.JButton();
           jButton3 = new javax.swing.JButton();
 
+          tableModel.addTableModelListener(new javax.swing.event.TableModelListener() {
+               public void tableChanged(javax.swing.event.TableModelEvent evt) {
+                    tableModelTableChanged(evt);
+               }
+          });
+
           setClosable(true);
           setIconifiable(true);
           setMaximizable(true);
@@ -167,29 +173,35 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           jScrollPane1.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
                table.getColumnModel().getColumn(0).setPreferredWidth(100);
-               table.getColumnModel().getColumn(0).setHeaderValue("Publikimi");
+               table.getColumnModel().getColumn(0).setHeaderValue("Data/Ora");
                table.getColumnModel().getColumn(1).setPreferredWidth(50);
                table.getColumnModel().getColumn(1).setHeaderValue("Kodi");
-               table.getColumnModel().getColumn(2).setPreferredWidth(150);
-               table.getColumnModel().getColumn(2).setHeaderValue("Kategoria");
-               table.getColumnModel().getColumn(3).setPreferredWidth(150);
-               table.getColumnModel().getColumn(3).setHeaderValue("Tipi");
+               table.getColumnModel().getColumn(2).setPreferredWidth(50);
+               table.getColumnModel().getColumn(2).setHeaderValue("Barkodi");
+               table.getColumnModel().getColumn(3).setPreferredWidth(50);
+               table.getColumnModel().getColumn(3).setHeaderValue("Sektori");
                table.getColumnModel().getColumn(4).setPreferredWidth(50);
-               table.getColumnModel().getColumn(4).setHeaderValue("Cmimi");
-               table.getColumnModel().getColumn(5).setPreferredWidth(50);
-               table.getColumnModel().getColumn(5).setHeaderValue("Oferta");
-               table.getColumnModel().getColumn(6).setPreferredWidth(30);
-               table.getColumnModel().getColumn(6).setHeaderValue("Skonto");
-               table.getColumnModel().getColumn(7).setPreferredWidth(10);
-               table.getColumnModel().getColumn(7).setHeaderValue("Gjendje");
-               table.getColumnModel().getColumn(8).setHeaderValue("");
-               table.getColumnModel().getColumn(9).setHeaderValue("");
+               table.getColumnModel().getColumn(4).setHeaderValue("Kategoria");
+               table.getColumnModel().getColumn(5).setPreferredWidth(300);
+               table.getColumnModel().getColumn(5).setHeaderValue("Pershkrimi");
+               table.getColumnModel().getColumn(6).setPreferredWidth(50);
+               table.getColumnModel().getColumn(6).setHeaderValue("Njesia");
+               table.getColumnModel().getColumn(7).setPreferredWidth(50);
+               table.getColumnModel().getColumn(7).setHeaderValue("Sasia");
+               table.getColumnModel().getColumn(8).setPreferredWidth(50);
+               table.getColumnModel().getColumn(8).setHeaderValue("Cmimi");
+               table.getColumnModel().getColumn(9).setPreferredWidth(50);
+               table.getColumnModel().getColumn(9).setHeaderValue("Oferta");
+               table.getColumnModel().getColumn(10).setPreferredWidth(50);
+               table.getColumnModel().getColumn(10).setHeaderValue("Skonto");
+               table.getColumnModel().getColumn(11).setPreferredWidth(20);
+               table.getColumnModel().getColumn(11).setHeaderValue("");
           }
           table.getColumn(0).setCellRenderer(tableModel.getColumnTableCellRenderer(0));
-          table.getColumn(4).setCellRenderer(tableModel.getColumnTableCellRenderer(4));
-          table.getColumn(5).setCellRenderer(tableModel.getColumnTableCellRenderer(5));
-          table.getColumn(6).setCellRenderer(tableModel.getColumnTableCellRenderer(6));
           table.getColumn(7).setCellRenderer(tableModel.getColumnTableCellRenderer(7));
+          table.getColumn(8).setCellRenderer(tableModel.getColumnTableCellRenderer(8));
+          table.getColumn(9).setCellRenderer(tableModel.getColumnTableCellRenderer(9));
+          table.getColumn(10).setCellRenderer(tableModel.getColumnTableCellRenderer(10));
           //this.jXTable1.setHighlighters(HighlighterFactory.createSimpleStriping());
 
           jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -291,6 +303,7 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
 		jXSearchField1.setText("");
 		
 		jCheckBox3.setSelected(true);
+			
 		this.tableModel.setLabels(this.treeModel.getLabels((DefaultMutableTreeNode) evt.getPath().getLastPathComponent()));
 		
 		filterTableRows();
@@ -331,7 +344,6 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
 		
 		try {Desktop.getDesktop().open(file);}
 		catch (IOException ex) {Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);}
-		
      }//GEN-LAST:event_jButton1ActionPerformed
 
      private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
@@ -347,20 +359,27 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           File file = LabelHTMLExport.exportHtml("label_export.html", tableModel.getLabels());
 		try {
 			Desktop.getDesktop().open(file);
-		} catch (IOException ex) {
+		}
+		catch (IOException ex) {
 			Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
 		}
      }//GEN-LAST:event_jButton3ActionPerformed
 
      private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-          for(int i=0; i<this.table.getRowCount();i++)
-          table.setValueAt(false, i, 7);
+          for(int i=0; i<this.table.getRowCount();i++) {
+			this.tableModel.setValueAt(false, table.convertRowIndexToModel(i), 11);
+		}
      }//GEN-LAST:event_jButton4ActionPerformed
 
      private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-          for(int i=0; i<this.table.getRowCount();i++)
-          table.setValueAt(true, i, 7);
+          for(int i=0; i<this.table.getRowCount();i++) {
+			this.tableModel.setValueAt(true, table.convertRowIndexToModel(i), 11);
+		}
      }//GEN-LAST:event_jButton5ActionPerformed
+
+     private void tableModelTableChanged(javax.swing.event.TableModelEvent evt) {//GEN-FIRST:event_tableModelTableChanged
+          // TODO add your handling code here:
+     }//GEN-LAST:event_tableModelTableChanged
 
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.Box.Filler filler1;

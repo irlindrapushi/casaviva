@@ -14,6 +14,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ import net.sourceforge.barbecue.output.OutputException;
 public class LabelHTMLExport {
 	
 	
-	public static File exportHtml(String path, List<Product.SpecialLabel> labels){
+	public static File exportHtml(String path, Collection<Product.SpecialLabel> labels){
 		
 		File file = new File(path);
 		
@@ -47,7 +48,7 @@ public class LabelHTMLExport {
 	}
 	
 	
-	private static String getHtml(List<Product.SpecialLabel> labels){		
+	private static String getHtml(Collection<Product.SpecialLabel> labels){		
 		String html = "<html>";
 		
 		html += getHtmlHead();
@@ -161,7 +162,7 @@ public class LabelHTMLExport {
 "				text-shadow:rgb(0,0,0) 2px 2px 2px; \n" +
 "				-webkit-font-smoothing:antialiased;\n" +
 "			}\n" +
-"			.label-container { background-image:url(backgr.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
+"			.label-container { background-image:url(backgr_a4.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
 "			.label-container1 { background-image:url(backgr1.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
 "			.label-container-2 { background-image:url(backgr2.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
 "			.label-container-3 { background-image:url(backgr3.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +

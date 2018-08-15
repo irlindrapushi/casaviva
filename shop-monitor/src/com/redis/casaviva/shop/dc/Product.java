@@ -27,11 +27,8 @@ public abstract class Product {
 	 * @param barcode
 	 * @param sector
 	 * @param category
-	 * @param brand
-	 * @param model
 	 * @param description
 	 * @param unit
-	 * @param warranty
 	 */
 	public Product(String code, String barcode, String sector, String category, String description, String unit) {
 		this.code = code;
@@ -173,6 +170,10 @@ public abstract class Product {
 		public String getDescription() {
 			return product.getDescription();
 		}
+		
+		public String getUnit() {
+			return product.getUnit();
+		}
 
 		public Double getNewPrice() {
 			return product.getNewPrice();
@@ -217,8 +218,8 @@ public abstract class Product {
 				this.getCode(),
 				this.getBarcode(),
 				this.getSector(),
-				this.getDescription(),
 				this.getCateogory(),
+				this.getDescription(),
 				this.getOldPrice(), 
 				this.getNewPrice(), 
 				this.getDiffPriceRatio(),
@@ -228,7 +229,7 @@ public abstract class Product {
 		}
 		
 		
-		public final static int FIELD_COUNT = 10;
+		public final static int FIELD_COUNT = 11;
 
 		public final static String[] FIELD_LABELS = {
 			"Publikimi", 
