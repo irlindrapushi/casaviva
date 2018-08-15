@@ -199,12 +199,12 @@ public class FrameStock extends javax.swing.JInternalFrame {
           table.setShowVerticalLines(false);
           jScrollPane1.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
-               table.getColumnModel().getColumn(0).setPreferredWidth(50);
-               table.getColumnModel().getColumn(1).setPreferredWidth(300);
-               table.getColumnModel().getColumn(2).setPreferredWidth(50);
-               table.getColumnModel().getColumn(3).setPreferredWidth(50);
-               table.getColumnModel().getColumn(4).setPreferredWidth(50);
-               table.getColumnModel().getColumn(5).setPreferredWidth(50);
+               table.getColumnModel().getColumn(0).setPreferredWidth(10);
+               table.getColumnModel().getColumn(1).setPreferredWidth(350);
+               table.getColumnModel().getColumn(2).setPreferredWidth(10);
+               table.getColumnModel().getColumn(3).setPreferredWidth(10);
+               table.getColumnModel().getColumn(4).setPreferredWidth(0);
+               table.getColumnModel().getColumn(5).setPreferredWidth(10);
           }
 
           getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);

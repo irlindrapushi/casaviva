@@ -5,7 +5,7 @@
  */
 package com.redis.casaviva.shop.dc;
 
-import com.redis.casaviva.shop.remote.SqlServer;
+import com.redis.casaviva.shop.remote.SQL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +55,7 @@ public class Feature implements Comparable<Feature>{
 	public static Set<Feature> read() {
 		Set<Feature> features = new TreeSet<>();
 		
-		try(Connection conn = SqlServer.getInstance().getConnection()){
+		try(Connection conn = SQL.getInstance().getConnection()){
 			ResultSet rs = conn.prepareStatement("SELECT [item],[name],[value] FROM [Feature]").executeQuery();
 			while(rs.next()) {
 				features.add(new Feature(rs.getString("item"), rs.getString("name"), rs.getString("value")));

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+<<<<<<< HEAD
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
@@ -15,6 +16,14 @@
             <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Stock.java</file>
             <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/casaviva/shop/dc/Item.java</file>
             <file>file:/C:/Users/Redjan%20Shabani/workspace/AZA/casaviva/shop-monitor/src/com/redis/utils/sets/History.java</file>
+=======
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/sql/SqlWarehouse.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/SQL.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/sql/SqlProduct.java</file>
+            <file>file:/C:/Users/user/workspace/dev/casaviva/shop-monitor/src/com/redis/casaviva/shop/remote/sql/SqlStock.java</file>
+>>>>>>> 81cfd3c97557bc4479e4bdef2e0e46dee3d9734f
         </group>
     </open-files>
 </project-private>

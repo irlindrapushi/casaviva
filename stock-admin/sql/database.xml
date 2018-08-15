@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
-<properties>
-<comment>Last Update: 2018-07-28T23:41:46.323Z</comment>
-<entry key="password">R6D33LTQ</entry>
-<entry key="url">jdbc:sqlserver://217.21.146.248:3306;databaseName=L86724204J</entry>
-<entry key="username">L86724204J</entry>
-</properties>

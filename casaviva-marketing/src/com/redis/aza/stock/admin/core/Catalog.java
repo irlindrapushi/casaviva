@@ -30,6 +30,7 @@ public interface Catalog {
 	
 	public class Item {
 		private final String code;
+		private final String barcode;
 		private final String category;
 		private final String description;
 		private final String supplier;
@@ -42,8 +43,9 @@ public interface Catalog {
 		private final Float special;
 		private final Date lastSellout;
 
-		public Item(String code, String category, String description, String supplier, Float minStock,Float stock, Float cost, Float buyin, Float whoolsale, Float retail, Float special, Date lastSellout) {
+		public Item(String code, String barcode, String category, String description, String supplier, Float minStock,Float stock, Float cost, Float buyin, Float whoolsale, Float retail, Float special, Date lastSellout) {
 			this.code = code;
+			this.barcode = barcode;
 			this.category = category;
 			this.description = description;
 			this.supplier = supplier;
@@ -61,6 +63,11 @@ public interface Catalog {
 			return code;
 		}
 
+		public String getBarcode() {
+			return barcode;
+		}
+
+		
 		public String getCategory() {
 			return category;
 		}
@@ -104,6 +111,9 @@ public interface Catalog {
 		public Date getLastSellout() {
 			return lastSellout;
 		}	
+<<<<<<< HEAD
 		
+=======
+>>>>>>> 81cfd3c97557bc4479e4bdef2e0e46dee3d9734f
 	}
 }

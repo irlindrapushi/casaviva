@@ -107,8 +107,9 @@
             <Component class="org.jdesktop.swingx.JXTable" name="table">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="12" rowCount="0">
+                  <Table columnCount="13" rowCount="0">
                     <Column editable="false" title="Kodi" type="java.lang.String"/>
+                    <Column editable="false" title="Barkodi" type="java.lang.String"/>
                     <Column editable="false" title="Kategoria" type="java.lang.String"/>
                     <Column editable="false" title="Pershkrimi" type="java.lang.String"/>
                     <Column editable="false" title="Fornitori" type="java.lang.String"/>
@@ -126,6 +127,11 @@
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
                     <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
                       <Renderer/>

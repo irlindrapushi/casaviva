@@ -7,7 +7,7 @@ package com.redis.casaviva.shop.remote.sql;
 
 import com.redis.casaviva.shop.dc.Product;
 import com.redis.casaviva.shop.dc.Warehouse;
-import com.redis.casaviva.shop.remote.SqlServer;
+import com.redis.casaviva.shop.remote.SQL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +27,7 @@ public class SqlWarehouse {
 		
 		String QUERY = "SELECT TOP 1 name FROM Warehouse WHERE code = ?";
 		
-		try(Connection connection = SqlServer.getInstance().getConnection()){
+		try(Connection connection = SQL.getInstance().getConnection()){
 			
 			PreparedStatement preparedStatement = connection.prepareStatement(QUERY);
 			preparedStatement.setString(1, code);

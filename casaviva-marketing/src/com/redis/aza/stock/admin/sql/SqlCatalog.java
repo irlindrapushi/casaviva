@@ -72,6 +72,7 @@ public final class SqlCatalog {
 			PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT TOP 1 "
 				+ "	code, "
+				+ "	barcode, "
 				+ "	category, "
 				+ "	description, "
 				+ "	supplier, "
@@ -92,7 +93,8 @@ public final class SqlCatalog {
 			
 			if(rs.next()) {
 				item = new Catalog.Item(
-					rs.getString("code"), 
+					rs.getString("code"),
+					rs.getString("barcode"),
 					rs.getString("category"),
 					rs.getString("description"),
 					rs.getString("supplier"),
@@ -120,6 +122,7 @@ public final class SqlCatalog {
 		try(PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT TOP 1 "
 				+ "	code, "
+				+ "	barcode, "
 				+ "	category, "
 				+ "	description, "
 				+ "	supplier, "
@@ -141,6 +144,7 @@ public final class SqlCatalog {
 			if(rs.next()) {
 				item = new Catalog.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"), 
 					rs.getString("category"),
 					rs.getString("description"),
 					rs.getString("supplier"),
@@ -162,8 +166,11 @@ public final class SqlCatalog {
 		return item;
 	}
 	
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> 81cfd3c97557bc4479e4bdef2e0e46dee3d9734f
 	private static boolean forEach(Consumer<Catalog.Item> consumer) {
 		boolean success = false;
 		
@@ -171,6 +178,7 @@ public final class SqlCatalog {
 			PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT "
 				+ "	code, "
+				+ "	barcode, "
 				+ "	category, "
 				+ "	description, "
 				+ "	supplier, "
@@ -190,6 +198,7 @@ public final class SqlCatalog {
 			while(rs.next()) {
 				Catalog.Item item = new Catalog.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"), 
 					rs.getString("category"),
 					rs.getString("description"),
 					rs.getString("supplier"),

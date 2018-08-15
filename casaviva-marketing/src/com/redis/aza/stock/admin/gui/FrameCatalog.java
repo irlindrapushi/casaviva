@@ -59,7 +59,7 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 		
 		this.table.getModel().addTableModelListener(this);
 		
-		this.table.getColumn(4).setCellRenderer(new DefaultTableCellRenderer(){
+		this.table.getColumn(5).setCellRenderer(new DefaultTableCellRenderer(){
 			DecimalFormat formatter = new DecimalFormat("###,###");
 			@Override
 			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
@@ -83,7 +83,7 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 			}
 			
 		});
-		this.table.getColumn(5).setCellRenderer(new DefaultTableCellRenderer(){
+		this.table.getColumn(6).setCellRenderer(new DefaultTableCellRenderer(){
 			DecimalFormat formatter = new DecimalFormat("###,###");
 			@Override
 			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
@@ -109,14 +109,14 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 			
 		});
 		
-		this.table.getColumn(6).setCellRenderer(new IntegerCellRenderer());
 		this.table.getColumn(7).setCellRenderer(new IntegerCellRenderer());
 		this.table.getColumn(8).setCellRenderer(new IntegerCellRenderer());
 		this.table.getColumn(9).setCellRenderer(new IntegerCellRenderer());
 		this.table.getColumn(10).setCellRenderer(new IntegerCellRenderer());
 		this.table.getColumn(11).setCellRenderer(new IntegerCellRenderer());
+		this.table.getColumn(12).setCellRenderer(new IntegerCellRenderer());
 		
-		this.table.getColumn(11).setCellRenderer(new DefaultTableCellRenderer(){
+		this.table.getColumn(12).setCellRenderer(new DefaultTableCellRenderer(){
 			private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); 
 			@Override
 			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
@@ -153,6 +153,7 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 		this.catalog.forEach( item -> {
 			Object[] row = new Object[]{				
 				item.getCode(),
+				item.getBarcode(),
 				item.getCategory(),
 				item.getDescription(),
 				item.getSupplier(),
@@ -270,14 +271,14 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 
                },
                new String [] {
-                    "Kodi", "Kategoria", "Pershkrimi", "Fornitori", "Sasi Min.", "Sasia", "Kosto", "Blerje", "Shitje Sh.", "Cmim Shitje", "Cmim Oferte", "Shitja e Fundit"
+                    "Kodi", "Barkodi", "Kategoria", "Pershkrimi", "Fornitori", "Sasi Min.", "Sasia", "Kosto", "Blerje", "Shitje Sh.", "Cmim Shitje", "Cmim Oferte", "Shitja e Fundit"
                }
           ) {
                Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Object.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Object.class
                };
                boolean[] canEdit = new boolean [] {
-                    false, false, false, false, true, false, false, false, false, false, false, false
+                    false, false, false, false, false, true, false, false, false, false, false, false, false
                };
 
                public Class getColumnClass(int columnIndex) {
@@ -299,17 +300,17 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
           jScrollPane2.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
                table.getColumnModel().getColumn(0).setPreferredWidth(50);
-               table.getColumnModel().getColumn(1).setPreferredWidth(100);
-               table.getColumnModel().getColumn(2).setPreferredWidth(300);
-               table.getColumnModel().getColumn(3).setPreferredWidth(100);
-               table.getColumnModel().getColumn(4).setPreferredWidth(50);
+               table.getColumnModel().getColumn(2).setPreferredWidth(100);
+               table.getColumnModel().getColumn(3).setPreferredWidth(300);
+               table.getColumnModel().getColumn(4).setPreferredWidth(100);
                table.getColumnModel().getColumn(5).setPreferredWidth(50);
                table.getColumnModel().getColumn(6).setPreferredWidth(50);
                table.getColumnModel().getColumn(7).setPreferredWidth(50);
                table.getColumnModel().getColumn(8).setPreferredWidth(50);
                table.getColumnModel().getColumn(9).setPreferredWidth(50);
                table.getColumnModel().getColumn(10).setPreferredWidth(50);
-               table.getColumnModel().getColumn(11).setPreferredWidth(100);
+               table.getColumnModel().getColumn(11).setPreferredWidth(50);
+               table.getColumnModel().getColumn(12).setPreferredWidth(100);
           }
 
           jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -433,7 +434,7 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 		
 		if(tme.getFirstRow() > -1 && tme.getFirstRow() == tme.getLastRow()){
 			if(tme.getType() == TableModelEvent.UPDATE){
-				if(tme.getColumn() == 4){
+				if(tme.getColumn() == 5){
 					TableModel model = (TableModel) tme.getSource();
 					String columnName = model.getColumnName(col);
 					Object data = model.getValueAt(row, col);
@@ -442,7 +443,7 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 					
 					
 					String item = (String) model.getValueAt(row, 0);
-					Float value = ((Number) model.getValueAt(row, 4)).floatValue();
+					Float value = ((Number) model.getValueAt(row, 5)).floatValue();
 					boolean success = SqlCatalog.updateMinStock(item, value);
 					if(!success)
 						JOptionPane.showMessageDialog(this, "Gabim gjate ndryshimit te vleres!", "Error SQL", JOptionPane.ERROR_MESSAGE);

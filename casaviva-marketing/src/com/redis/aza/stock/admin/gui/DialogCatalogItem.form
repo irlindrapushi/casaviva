@@ -31,6 +31,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Component id="panelPieHost" max="32767" attributes="0"/>
+<<<<<<< HEAD
+=======
+                  <Component id="jPanel1" max="32767" attributes="0"/>
+>>>>>>> 81cfd3c97557bc4479e4bdef2e0e46dee3d9734f
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
@@ -42,7 +46,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="panelPieHost" pref="282" max="32767" attributes="0"/>
+              <Component id="panelPieHost" pref="244" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
