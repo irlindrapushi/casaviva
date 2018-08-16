@@ -1,0 +1,141 @@
+page[size="A4"] {
+	background: white;
+	width: 297mm;
+	height: 210mm;
+	display: block;
+	margin: 0 auto;
+}
+			
+@media print {
+		body, page[size="A4"] {
+		margin: 0;
+		box-shadow: 0;
+	}
+}
+			
+.outline {
+	color:rgb(206,023,030); 
+	text-shadow:rgb(0,0,0) 2px 2px 2px; 
+	-webkit-font-smoothing: antialiased;
+}
+			
+.label {
+	position: relative;
+	background-image:url(backgr_a4.png); 
+	background-repeat:no-repeat; 
+	background-size:100% 100%; 
+	width:297mm; height:210mm; 
+	border: solid;
+	border-color: rgb(240,240,240);
+}
+			
+.percent{
+	position:absolute; 
+	margin-top: 93mm; 
+	margin-left: 35mm;
+	width:30%; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	color: white;
+	font-size:140;
+	text-align:left;
+}
+			
+.oferta {
+	position:absolute; 
+	margin-top: 93mm; 
+	margin-left: 185mm;
+	width:30%; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	color: red;
+	font-size:140px;
+	text-align:right;
+}
+			
+.cmimi {
+	position:absolute; 
+	margin-top: 75mm; 
+	margin-left: 185mm;
+	width:30%; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	color: blue;
+	font-size:70px;
+	text-align: center;
+}
+			
+.sector {	
+	position:absolute; 
+	margin-top: 70mm; 
+	margin-left: 20mm;
+	width:50mm; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	color: white;
+	font-size:35px;
+	text-align: left;
+}
+
+.category {
+	position:absolute; 
+	margin-top: 60mm; 
+	margin-left: 90mm;
+	width:30%; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	color: white;
+	font-size:35px;
+	text-align: center;
+}
+
+.description {
+	position:absolute; 
+	margin-top: 65mm; 
+	margin-left: 90mm;
+	width: 200mm; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	font-size:50px;
+	text-align: center;
+}
+			
+.timestamp{
+	position:absolute; 
+	font-family:FranklinGothicDemi; 
+	font-weight:bold;
+	margin-top: 99mm; 
+	width: 100%;
+	color: black;
+	font-size:15px;
+	text-align: center;
+}
+			
+.artikull{
+	position:relative; 
+	top:70mm;right:0px; 
+	width:100%; 
+	font-family:DinBlack; 
+	font-weight:bold; 
+	text-align:center;
+}
+			
+.strikethrough {
+	position: relative;
+}
+			
+.strikethrough:before {
+	position: absolute;
+	content: "";
+	left: 10%;
+	top: 50%;
+	right: 10%;
+	border-top: 3px solid;
+	border-color: rgb(206,023,030);
+
+	-webkit-transform:rotate(-10deg);
+	-moz-transform:rotate(-10deg);
+	-ms-transform:rotate(-10deg);
+	-o-transform:rotate(-10deg);
+	transform:rotate(-10deg);
+}

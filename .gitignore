@@ -50,3 +50,4 @@ casaviva-marketing/config.properties
 /catalog/build/
 /redis-stock-core/nbproject/private/
 /catalog/dist/
+/*.rar

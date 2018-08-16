@@ -81,7 +81,7 @@ public class LabelHTMLExport {
 	private static String getHtmlHead(){
 		String head = "<head>";
 		
-		head += CSS_STYLE;
+		head += CSS_LABEL_A4;
 		
 		head += "</head>";
 		return head;
@@ -100,31 +100,25 @@ public class LabelHTMLExport {
 			htmlDiv = HTML_LABEL_2;
 		}
 		else{
-			htmlDiv = label.getDiffPriceRatio() < 0.13 ? HTML_LABEL1 : HTML_LABEL;
+			htmlDiv = label.getDiffPriceRatio() < 0.13 ? HTML_LABEL1 : HTML_LABEL_A4;
 		}
 		
 		
 		
 		
-		NumberFormat numberFormatA = NumberFormat.getIntegerInstance(); 
-		NumberFormat numberFormatB = NumberFormat.getIntegerInstance(); numberFormatB.setMinimumIntegerDigits(3);
 		
-		String ofertaA = numberFormatA.format( Math.floor(label.getNewPrice()/1000) );
-		String ofertaB =  numberFormatB.format(label.getNewPrice() - 1000 * Math.floor(label.getNewPrice()/1000));
 		
-		String cmimiA = numberFormatA.format(Math.floor(label.getOldPrice()/1000));
-		String cmimiB = numberFormatB.format(label.getOldPrice() - 1000 * Math.floor( label.getOldPrice() / 1000) );
 		
 		htmlDiv = htmlDiv.replace("_CODE_", label.getCode());
-		htmlDiv = htmlDiv.replace("_LABEL_INSTANT_", label.getDateTime().format(DateTimeFormatter.ofPattern("dd.MM HH:mm")));
-		htmlDiv = htmlDiv.replace("_PRINT_INSTANT_", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM HH:mm")));
+		htmlDiv = htmlDiv.replace("_LABELTS_", label.getDateTime().format(DateTimeFormatter.ofPattern("dd.MM HH:mm")));
+		htmlDiv = htmlDiv.replace("_PRINTTS_", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM HH:mm")));
 		
-		htmlDiv = htmlDiv.replace("_PERC_ULJE_", "" + Math.round( 100 * label.getDiffPriceRatio()));
-		htmlDiv = htmlDiv.replace("_OFERTE_A_","" + ofertaA);
-		htmlDiv = htmlDiv.replace("_OFERTE_B_","" + ofertaB);
-		htmlDiv = htmlDiv.replace("_CMIM_A_","" + cmimiA);
-		htmlDiv = htmlDiv.replace("_CMIM_B_","" + cmimiB);
-		htmlDiv = htmlDiv.replace("_TIPI_", label.getCateogory() == null ? "" : label.getCateogory());
+		htmlDiv = htmlDiv.replace("_ULJE_", "" + Math.round( 100 * label.getDiffPriceRatio()));
+		htmlDiv = htmlDiv.replace("_OFERTA_", "" + new DecimalFormat("#,##0").format(label.getNewPrice()));
+		htmlDiv = htmlDiv.replace("_CMIMI_","" + new DecimalFormat("#,##0").format(label.getOldPrice()));
+		htmlDiv = htmlDiv.replace("_SECTOR_", label.getSector() == null ? "" : label.getSector());
+		htmlDiv = htmlDiv.replace("_CATEGORY_", label.getCateogory() == null ? "" : label.getCateogory());
+		htmlDiv = htmlDiv.replace("_DESCRIPTION_", label.getDescription() == null ? "" : label.getDescription());
 		
 		return htmlDiv;
 	}
@@ -140,111 +134,31 @@ public class LabelHTMLExport {
 	
 	
 	
-	private static final String CSS_STYLE = 
-		"<style>\n" +
-"			page[size=\"A4\"] {\n" +
-"				background: white;\n" +
-"				width: 21cm;\n" +
-"				height: 29.7cm;\n" +
-"				display: block;\n" +
-"				margin: 0 auto;\n" +
-"				margin-bottom: 0.5cm;\n" +
-"				box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);\n" +
-"			}\n" +
-"			@media print {\n" +
-"				body, page[size=\"A4\"] {\n" +
-"					margin: 0;\n" +
-"					box-shadow: 0;\n" +
-"				}\n" +
-"			}\n" +
-"			.outline {\n" +
-"				color:rgb(206,023,030); \n" +
-"				text-shadow:rgb(0,0,0) 2px 2px 2px; \n" +
-"				-webkit-font-smoothing:antialiased;\n" +
-"			}\n" +
-"			.label-container { background-image:url(backgr_a4.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
-"			.label-container1 { background-image:url(backgr1.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
-"			.label-container-2 { background-image:url(backgr2.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
-"			.label-container-3 { background-image:url(backgr3.png); background-repeat:no-repeat; background-size:100% 100%; width:65mm; height:141mm; float:left; margin-top: 2mm; margin-left: 2mm;}\n" +
-"			.percent{\n" +
-"				position:relative; \n" +
-"				top:55mm; width:100%; \n" +
-"				font-family:FranklinGothicDemi; \n" +
-"				font-weight:bold;\n" +
-"				font-size:75;\n" +
-"				text-align:center;\n" +
-"			}\n" +
-"			.oferta {\n" +
-"				position:relative; \n" +
-"				top:65mm; \n" +
-"				width:100%; \n" +
-"				color:rgb(206,023,030); \n" +
-"				font-family:DinBlack; \n" +
-"				font-weight:bold; \n" +
-"				font-size:60; \n" +
-"				text-align:center;\n" +
-"			}\n" +
-"			\n" +
-"			.cmimi {\n" +
-"				position:relative; \n" +
-"				top:60mm; \n" +
-"				left: 30mm; \n" +
-"				width: 30mm;\n" +
-"				color:rgb(000,125,197); \n" +
-"				font-family:DinBlack; \n" +
-"				font-weight:bold; \n" +
-"				font-size:33; \n" +
-"				text-align:right; \n" +
-"			}\n" +
-"			\n" +
-"			.artikull{\n" +
-"				position:relative; \n" +
-"				top:70mm;right:0px; \n" +
-"				width:100%; \n" +
-"				font-family:DinBlack; \n" +
-"				font-weight:bold; \n" +
-"				text-align:center;\n" +
-"			}\n" +
-"			\n" +
-"			.strikethrough {\n" +
-"				position: relative;\n" +
-"			}\n" +
-"			\n" +
-"			.strikethrough:before {\n" +
-"				position: absolute;\n" +
-"				content: \"\";\n" +
-"				left: 0;\n" +
-"				top: 50%;\n" +
-"				right: 0;\n" +
-"				border-top: 3px solid;\n" +
-"				border-color: rgb(206,023,030);\n" +
-"			\n" +
-"				-webkit-transform:rotate(-10deg);\n" +
-"				-moz-transform:rotate(-10deg);\n" +
-"				-ms-transform:rotate(-10deg);\n" +
-"				-o-transform:rotate(-10deg);\n" +
-"				transform:rotate(-10deg);\n" +
-"			}\n" +
-"			\n" +
-"			.code-instant{position:relative; top:72mm; right:0px; width:100%; font-size: 10px; }\n" +
-"			.code-instant1{position:relative; top:72mm; right:0px; width:100%; font-size: 10px; }\n" +
-"		</style>";
+	private static final String CSS_LABEL_A4 = "<link rel='stylesheet' type='text/css' href='special_label_a4.css'>";
+	private static final String HTML_LABEL_A4 = ""
+		+ "<div class='label'>"
+		+ "	<div class = 'percent outline'>_ULJE_<small>%</small></div>"
+		+ "	<div class = 'oferta outline'>_OFERTA_L</div>"
+		+ "	<div class = 'cmimi strikethrough'>_CMIMI_L</div>"
+		+ "	<div class = 'sector'>_SECTOR_</div>"
+		+ "	<div class = 'category'>_CATEGORY_</div>"
+		+ "	<div class = 'description'>_DESCRIPTION_</div>"
+		+ "	<div class = 'timestamp'>_CODE_ : _LABELTS_ : _PRINTTS_</div>"
+		+ "</div>";
 	
 	
 	
 	
-	private static final String HTML_LABEL = 
-		"<div class='label-container'>	\n" +
-"				<div class = 'percent'>_PERC_ULJE_<small><small>%</small></small></div>	\n" +
-"				<div class = 'oferta outline'>_OFERTE_A_<small><sup>._OFERTE_B_ L</sup></small></div>	\n" +
-"				<div class = 'cmimi strikethrough'>_CMIM_A_<small><sup>._CMIM_B_ L</sup></small></div>	\n" +
-"				<div class = 'artikull'>		\n" +
-"					<div class = 'tipi'>_TIPI_</div>		\n" +
-"					<div class = 'marka'>_MARKA_</div>		\n" +
-"					<div class = 'modeli'>_MODELI_</div>	\n" +
-"				</div>\n" +
-"				<div class='code-instant'>_CODE_ : _LABEL_INSTANT_ : _PRINT_INSTANT_</div>\n" +
-"			</div>";
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private static final String HTML_LABEL1 = 
 		"<div class='label-container1'>	\n" +
 "				<div class = 'percent'><font color='white'>_PERC_ULJE_<small><small>%</small></small></font></div>	\n" +

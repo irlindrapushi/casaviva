@@ -5,7 +5,6 @@
  */
 package com.redis.casaviva.shop.remote;
 
-import com.redis.casaviva.shop.Main;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -81,17 +80,4 @@ public abstract class SQL {
 			public void setUserPass(String userPass) {this.preferences.put("password", userPass);}
 		};
 	}
-<<<<<<< HEAD:shop-monitor/src/com/redis/casaviva/shop/remote/SqlServer.java
-        
-	public static void main(String[] args) {
-		SqlServer sqlServer = SqlServer.getInstance();
-		sqlServer.setHostName("217.21.146.248");
-		sqlServer.setDatabaseName("L86724204J");
-		sqlServer.setPortNumber("3306");
-		sqlServer.setUserName("sa");
-		sqlServer.setUserPass("");
-        
-	}
-=======
->>>>>>> 81cfd3c97557bc4479e4bdef2e0e46dee3d9734f:shop-monitor/src/com/redis/casaviva/shop/remote/SQL.java
 }

@@ -309,7 +309,7 @@ public class FrameMain extends javax.swing.JFrame {
           jXTree1 = new org.jdesktop.swingx.JXTree();
 
           setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-          setTitle("AZA KATALOG");
+          setTitle("CASAVIVA 2018 - KATALOGU");
           setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
           addWindowListener(new java.awt.event.WindowAdapter() {
                public void windowOpened(java.awt.event.WindowEvent evt) {
