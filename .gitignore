@@ -51,3 +51,4 @@ casaviva-marketing/config.properties
 /redis-stock-core/nbproject/private/
 /catalog/dist/
 /*.rar
+/shop/special_label_a4.css
