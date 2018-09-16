@@ -17,103 +17,77 @@
 
 package com.redis.aza.stock.admin.core;
 
-import java.util.Date;
+import com.redis.aza.stock.admin.core.catalog.Article;
+import java.time.Instant;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  *
  * @author Redjan Shabani
  */
 public interface Catalog {
-		
-	public boolean forEach(Consumer<Item> consumer);
 	
-	public class Item {
-		private final String code;
-		private final String barcode;
-		private final String category;
-		private final String description;
-		private final String supplier;
-		private final Float minStock;
-		private final Float stock;
-		private final Float cost;
-		private final Float buyin;
-		private final Float whoolsale;
-		private final Float retail;
-		private final Float special;
-		private final Date lastSellout;
-
-		public Item(String code, String barcode, String category, String description, String supplier, Float minStock,Float stock, Float cost, Float buyin, Float whoolsale, Float retail, Float special, Date lastSellout) {
-			this.code = code;
-			this.barcode = barcode;
-			this.category = category;
-			this.description = description;
-			this.supplier = supplier;
-			this.minStock = minStock;
-			this.stock = stock;
-			this.cost = cost;
-			this.buyin = buyin;
-			this.whoolsale = whoolsale;
-			this.retail = retail;
-			this.special = special;
-			this.lastSellout = lastSellout;
-		}
-
-		public String getCode() {
-			return code;
-		}
-
-		public String getBarcode() {
-			return barcode;
-		}
-
-		
-		public String getCategory() {
-			return category;
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-		public String getSupplier() {
-			return supplier;
-		}
-
-		public Float getMinStock() {
-			return minStock;
-		}
-
-		public Float getStock() {
-			return stock;
-		}
-
-		public Float getCost() {
-			return cost;
-		}
-
-		public Float getBuyin() {
-			return buyin;
-		}
-
-		public Float getWhoolsale() {
-			return whoolsale;
-		}
-
-		public Float getRetail() {
-			return retail;
-		}
-
-		public Float getSpecial() {
-			return special;
-		}
-
-		public Date getLastSellout() {
-			return lastSellout;
-		}	
-<<<<<<< HEAD
-		
-=======
->>>>>>> 81cfd3c97557bc4479e4bdef2e0e46dee3d9734f
+	public Article getArticle(String code);
+	public void forEach(Consumer<Article> consumer);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public String barcode(Item item);
+	
+	public Double buyPrice(Item item);
+	public Double costPrice(Item item);
+	public Double sellPrice(Item item);
+	
+	
+	
+	
+	
+	
+	
+	
+	public Stream<String> sectors();
+	public Stream<String> categories(String sector);
+	
+	public Stream<Item> items();
+	public Stream<Item> items(String sector);
+	public Stream<Item> items(String sector, String category);
+	public Stream<Item> items(String... path);
+	
+	public Stream<Item> items(Object... path);
+	
+	
+	
+	
+	
+	
+	
+	public interface Node {
+		public Stream<? extends Node> childs();
+		public Stream<? extends Article> articles();
 	}
+	
+	
+		
+	public interface Price {
+		public Article parent();
+		public Double value();
+		public Double discount();
+		public Instant instant();
+	}
+	
 }

@@ -17,13 +17,25 @@
 
 package com.redis.aza.stock.admin.utils;
 
+import java.util.HashMap;
 import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  *
  * @author Redjan Shabani
- * @param <T>
+ * @param <K>
+ * @param <V>
  */
-public interface Dataset<T> {
-	public void forEach(Consumer<T> consumer);
+public interface Dataset<K,V> {
+	public void forEach(Consumer<V> consumer);
+	public void forEach(BiConsumer<K,V> consumer);
+	
+	
+	
+	public default HashMap<K,V> toMap() {
+		HashMap<K,V> map = new HashMap<>();
+		this.forEach((k,v) -> map.put(k, v));
+		return map;
+	}
 }

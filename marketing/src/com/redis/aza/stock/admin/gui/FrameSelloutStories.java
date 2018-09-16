@@ -17,7 +17,9 @@
 
 package com.redis.aza.stock.admin.gui;
 
+import com.redis.aza.stock.admin.core.Catalog;
 import com.redis.aza.stock.admin.core.Sellout;
+import com.redis.aza.stock.admin.sql.CatalogSQL;
 import com.redis.aza.stock.admin.sql.SqlSellout;
 import com.redis.utils.export.ExcelIO;
 import java.awt.Component;
@@ -25,6 +27,8 @@ import java.awt.Desktop;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,48 +40,154 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import static javax.swing.SwingConstants.RIGHT;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
  * @author Redjan Shabani
  */
 public class FrameSelloutStories extends javax.swing.JInternalFrame {
-
+	
+	Catalog catalog = CatalogSQL.getCatalog();
 	private final Sellout sellout = SqlSellout.getSellout();
 	
 	public FrameSelloutStories() {
 		initComponents();
 		
-		this.table.setDefaultRenderer(Float.class, new IntegerCellRenderer());
+		this.table.setDefaultRenderer(Double.class, new IntegerCellRenderer());
 		
-		this.table.getColumn(6).setCellRenderer(new DefaultTableCellRenderer(){
+		this.table.setDefaultRenderer(Number.class, new DefaultTableCellRenderer(){
+			DecimalFormat formatter = new DecimalFormat("###,##0.00");
+			@Override
+			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+				super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
+				
+				if(o instanceof Number) {
+					setHorizontalAlignment(RIGHT);
+					
+					Double value = ((Number) o).doubleValue();
+					if(value < 0) {
+						setText("<html><font color='red'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else if(value == 0) {
+						setText("<html><font color='orange'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else {
+						setText("<html><b>" + formatter.format(value) + "</html>");
+					}
+				}		
+				
+				return this;
+			}
+			
+		});
+		
+		this.table.getColumn(7).setCellRenderer(new DefaultTableCellRenderer(){
 			private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); 
 			@Override
 			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
-				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);				
-				if(o instanceof Date) {
-					long diff = Date.from(Instant.now()).getTime() - ((Date) o).getTime();
+				super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);				
+				
+				if(o instanceof Instant) {
+					long diff = Instant.now().toEpochMilli() - ((Instant) o).toEpochMilli();
 					long days = TimeUnit.MILLISECONDS.toDays(diff);
 					
 					if(days == 0)
-						label.setText("<html>"  + " <b>[Sot]</b> " + formatter.format(o) + "</html>");
+						setText("<html>"  + " <b>[Sot]</b> " + formatter.format(Date.from((Instant) o)) + "</html>");
 					else if( days == 1)
-						label.setText("<html>"  + " <b>[Dje]</b> " + formatter.format(o) + "</html>");
+						setText("<html>"  + " <b>[Dje]</b> " + formatter.format(Date.from((Instant) o)) + "</html>");
 					else{
-						label.setText("<html>"  + " <b>[" + days + "d]</b> " + formatter.format(o) + "</html>");
+						setText("<html>"  + " <b>[" + days + "d]</b> " + formatter.format(Date.from((Instant) o)) + "</html>");
 					}
-					label.setHorizontalAlignment(JLabel.RIGHT);
-				}			
-				return label;
+					setHorizontalAlignment(JLabel.RIGHT);
+				}	
+				
+				return this;
 			}		
 		});
 	}
 	
 	private void reload() {
+		this.refreshTree();
+	}	
+	
+	
+	
+	
+	
+	
+	
+	
+	private void refreshTree() {
+		this.jXTree1.collapseAll();
+		
+		DefaultMutableTreeNode catalogNode = new DefaultMutableTreeNode();
+		this.catalog.sectors().forEach(sector -> {
+			DefaultMutableTreeNode sectorNode = new DefaultMutableTreeNode(sector);
+			
+			this.catalog.categories(sector).forEach(category -> {
+				DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(category);
+				
+				sectorNode.add(categoryNode);
+			});
+			
+			catalogNode.add(sectorNode);
+		});
+		this.jXTree1.setModel(new DefaultTreeModel(catalogNode));
+		this.jXTree1.expandRow(0);
+		this.jXTree1.setSelectionRow(0);
+	}
+	
+	
+	private void refreshTable() {
+		
+		DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
+		tableModel.setRowCount(0);
+		this.fieldValue.setValue(0.0d);
+		
+		
+		Sellout.State state = this.sellout.getState();
+		
+		Object[] path = this.jXTree1.getSelectionPath().getPath();
+		
+		this.catalog.items(path).forEach(item -> {
+			
+			Double weight = state.getWeight(item);
+			Double value = state.getValue(item);
+			
+			
+			Object[] row = new Object[]{
+				catalog.barcode(item),
+				item.getCode(),
+				item.getName(),
+				item.getUnit(),
+				weight,
+				value / weight,
+				value,
+				state.getLastEvent(item)
+			};
+			
+			tableModel.addRow(row);
+			
+			
+			Double valueSum = (Double) this.fieldValue.getValue();
+			valueSum += value;
+			this.fieldValue.setValue(valueSum);
+		});
+		
+//		this.fieldValue.setValue(state.getValue());
+		
+	}
+	
+	
+	
+	private void refreshTable_() {
 		this.searchField.setText("");
 		
 		DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
@@ -95,7 +205,8 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
 			
 			tableModel.addRow(row);
 		});
-	}	
+	}
+	
 	
 	private void filter() {
 		List<RowFilter<TableModel, Integer>> filters = new ArrayList<>();
@@ -115,11 +226,17 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
           filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           jButton1 = new javax.swing.JButton();
           jButton2 = new javax.swing.JButton();
+          jSplitPane1 = new javax.swing.JSplitPane();
+          jPanel1 = new javax.swing.JPanel();
           jScrollPane1 = new javax.swing.JScrollPane();
           table = new org.jdesktop.swingx.JXTable();
           jToolBar2 = new javax.swing.JToolBar();
           searchField = new org.jdesktop.swingx.JXSearchField();
           filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+          jXLabel1 = new org.jdesktop.swingx.JXLabel();
+          fieldValue = new javax.swing.JFormattedTextField();
+          jScrollPane2 = new javax.swing.JScrollPane();
+          jXTree1 = new org.jdesktop.swingx.JXTree();
 
           setClosable(true);
           setIconifiable(true);
@@ -183,19 +300,23 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
 
           getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
+          jSplitPane1.setDividerLocation(220);
+
+          jPanel1.setLayout(new java.awt.BorderLayout());
+
           table.setModel(new javax.swing.table.DefaultTableModel(
                new Object [][] {
 
                },
                new String [] {
-                    "Kodi", "Pershkrimi", "Njesia", "Sasia e Shitjeve", "Cmimi Mesatar", "Vlera e Shitjeve", "Shitja e Fundit"
+                    "Barkodi", "Kodi", "Emertimi", "Njesia", "Sasia", "Cmimi", "Vlera", "E Fundit"
                }
           ) {
                Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Object.class
+                    java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Object.class
                };
                boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false, false
+                    false, false, false, false, false, false, false, false
                };
 
                public Class getColumnClass(int columnIndex) {
@@ -215,15 +336,16 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
           jScrollPane1.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
                table.getColumnModel().getColumn(0).setPreferredWidth(50);
-               table.getColumnModel().getColumn(1).setPreferredWidth(500);
-               table.getColumnModel().getColumn(2).setPreferredWidth(50);
+               table.getColumnModel().getColumn(1).setPreferredWidth(50);
+               table.getColumnModel().getColumn(2).setPreferredWidth(500);
                table.getColumnModel().getColumn(3).setPreferredWidth(50);
                table.getColumnModel().getColumn(4).setPreferredWidth(50);
                table.getColumnModel().getColumn(5).setPreferredWidth(50);
-               table.getColumnModel().getColumn(6).setPreferredWidth(150);
+               table.getColumnModel().getColumn(6).setPreferredWidth(50);
+               table.getColumnModel().getColumn(7).setPreferredWidth(50);
           }
 
-          getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+          jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
           jToolBar2.setFloatable(false);
           jToolBar2.setRollover(true);
@@ -243,7 +365,30 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
           jToolBar2.add(searchField);
           jToolBar2.add(filler2);
 
-          getContentPane().add(jToolBar2, java.awt.BorderLayout.PAGE_END);
+          jXLabel1.setText("Total Vlera:");
+          jToolBar2.add(jXLabel1);
+
+          fieldValue.setColumns(10);
+          fieldValue.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+          fieldValue.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+          fieldValue.setMaximumSize(new java.awt.Dimension(86, 20));
+          fieldValue.setMinimumSize(new java.awt.Dimension(86, 20));
+          jToolBar2.add(fieldValue);
+
+          jPanel1.add(jToolBar2, java.awt.BorderLayout.PAGE_END);
+
+          jSplitPane1.setRightComponent(jPanel1);
+
+          jXTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+               public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                    jXTree1ValueChanged(evt);
+               }
+          });
+          jScrollPane2.setViewportView(jXTree1);
+
+          jSplitPane1.setLeftComponent(jScrollPane2);
+
+          getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
           pack();
      }// </editor-fold>//GEN-END:initComponents
@@ -260,7 +405,7 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
           if(evt.getClickCount() == 2){
 			int row = this.table.rowAtPoint(evt.getPoint());
 			if(row != -1){
-				String itemCode = String.valueOf(this.table.getValueAt(row, 0));
+				String itemCode = String.valueOf(this.table.getValueAt(row, 1));
 				DialogSelloutEvents dialog = new DialogSelloutEvents((Frame) SwingUtilities.getWindowAncestor(this));
 				dialog.setEvents(sellout.getEvents(itemCode));
 				dialog.setLocationRelativeTo(this);
@@ -287,17 +432,27 @@ public class FrameSelloutStories extends javax.swing.JInternalFrame {
 		dialog.setVisible(true);
      }//GEN-LAST:event_jButton1ActionPerformed
 
+     private void jXTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jXTree1ValueChanged
+		this.refreshTable();
+     }//GEN-LAST:event_jXTree1ValueChanged
+
 
      // Variables declaration - do not modify//GEN-BEGIN:variables
+     private javax.swing.JFormattedTextField fieldValue;
      private javax.swing.Box.Filler filler1;
      private javax.swing.Box.Filler filler2;
      private javax.swing.Box.Filler filler3;
      private javax.swing.JButton jButton1;
      private javax.swing.JButton jButton2;
      private javax.swing.JButton jButton3;
+     private javax.swing.JPanel jPanel1;
      private javax.swing.JScrollPane jScrollPane1;
+     private javax.swing.JScrollPane jScrollPane2;
+     private javax.swing.JSplitPane jSplitPane1;
      private javax.swing.JToolBar jToolBar1;
      private javax.swing.JToolBar jToolBar2;
+     private org.jdesktop.swingx.JXLabel jXLabel1;
+     private org.jdesktop.swingx.JXTree jXTree1;
      private org.jdesktop.swingx.JXSearchField searchField;
      private org.jdesktop.swingx.JXTable table;
      // End of variables declaration//GEN-END:variables

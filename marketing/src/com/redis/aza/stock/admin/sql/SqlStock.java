@@ -17,11 +17,19 @@
 
 package com.redis.aza.stock.admin.sql;
 
+import com.redis.aza.stock.admin.core.Catalog;
+import com.redis.aza.stock.admin.core.State;
 import com.redis.aza.stock.admin.core.Stock;
+import com.redis.aza.stock.admin.core.Subject;
+import com.redis.aza.stock.admin.core.Warehouse;
+import com.redis.aza.stock.admin.sql.state.SqlState;
+import com.redis.aza.stock.admin.utils.Dataset;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,24 +38,74 @@ import java.util.logging.Logger;
  *
  * @author Redjan Shabani
  */
-public class SqlStock {
+public class SqlStock implements Stock{
 	
 	public static Stock getStock() {
-		return SqlStock::forEach;
+		return SQL.getStock();
 	}
+	
+	@Override
+	public Dataset<String, Subject> suppliers() {
+		return new SupplierSQL();
+	}
+
+	@Override
+	public Dataset<String, Subject> customer() {
+		return new CustomerSQL();
+	}
+
+	@Override
+	public Dataset<String, ? extends Warehouse> warehouses() {
+		return new WarehouseSQL();
+	}
+
+	@Override
+	public Catalog getCatalog() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public State getState() {
+		return SqlState.getState();
+	}
+
+	@Override
+	public State getState(Warehouse warehouse) {
+		return warehouse == null ? this.getState() : SqlState.getState(warehouse.getCode());
+	}
+	
+	
+	
 	public static Stock.Item select(Connection cn, String code) {
 		
 		Stock.Item item = null;
 		
 		
 		try(PreparedStatement ps = cn.prepareStatement(""
-				+ "SELECT TOP 1 "
-				+ "	[code], "
-				+ "	[description], "
-				+ "	[unit], "
-				+ "	[M01], [M02] "
-				+ "FROM [StockItem] "
-				+ "WHERE [code] = ? ")){
+				+ "SELECT TOP 1 [code], [barcode], [description], [unit], [M01], [M02] FROM [StockItem] WHERE [code] = ? ")){
 			
 			ps.setString(1, code);
 			
@@ -56,6 +114,7 @@ public class SqlStock {
 			while(rs.next()) {
 				item = new Stock.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"),
 					rs.getString("description"), 
 					rs.getString("unit")
 				);
@@ -64,8 +123,8 @@ public class SqlStock {
 				item.put("M02", rs.getFloat("M02"));
 			}
 		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlWarehouse.class.getName()).log(Level.SEVERE, null, ex);
+		catch (SQLException ex) { 
+			Logger.getLogger(SqlStock.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
 		return item;
@@ -77,16 +136,10 @@ public class SqlStock {
 		Stock.Item item = null;
 		
 		
-		try(Connection cn = SqlServer.getConnection()) {
+		try(Connection cn = SQL.getConnection()) {
 			PreparedStatement ps;
 			ps = cn.prepareStatement(""
-				+ "SELECT TOP 1 "
-				+ "	[code], "
-				+ "	[description], "
-				+ "	[unit], "
-				+ "	[M01], [M02] "
-				+ "FROM [StockItem] "
-				+ "WHERE [code] = ? ");	
+				+ "SELECT TOP 1 [code], [barcode], [description], [unit], [M01], [M02] FROM [StockItem] WHERE [code] = ? ");	
 			ps.setString(1, code);
 			
 			ResultSet rs = ps.executeQuery();
@@ -94,6 +147,7 @@ public class SqlStock {
 			while(rs.next()) {
 				item = new Stock.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"),
 					rs.getString("description"), 
 					rs.getString("unit")
 				);
@@ -101,25 +155,21 @@ public class SqlStock {
 				item.put("M01", rs.getFloat("M01"));
 				item.put("M02", rs.getFloat("M02"));
 			}
-		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlWarehouse.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		catch (SQLException ex) { 
+			Logger.getLogger(SqlStock.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
 		return item;
 	}
 	
-	private static boolean forEach(Consumer<Stock.Item> consumer){
+	public static boolean forEach(Consumer<Stock.Item> consumer){
 		boolean success = false;
 		
-		try(Connection cn = SqlServer.getConnection()) {
+		try(Connection cn = SQL.getConnection()) {
 			PreparedStatement ps;
 			ps = cn.prepareStatement(""
-				+ "SELECT "
-				+ "	[code], "
-				+ "	[description], "
-				+ "	[unit], "
-				+ "	[M01], [M02] "
+				+ "SELECT [code], [barcode], [description], [unit], [M01], [M02] "
 				+ "FROM [StockItem] "
 				+ "ORDER BY [code] ASC");	
 			ResultSet rs = ps.executeQuery();
@@ -127,6 +177,7 @@ public class SqlStock {
 			while(rs.next()) {
 				Stock.Item item = new Stock.Item(
 					rs.getString("code"), 
+					rs.getString("barcode"),
 					rs.getString("description"), 
 					rs.getString("unit")
 				);
@@ -139,12 +190,17 @@ public class SqlStock {
 			
 			success = true;
 		} 
-		catch (SQLException ex) {
-			Logger.getLogger(SqlWarehouse.class.getName()).log(Level.SEVERE, null, ex);
+		catch (SQLException ex) { 
+			Logger.getLogger(SqlStock.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
 		return success;
 	}
+
+	
+
+	
+
 	
 	
 	

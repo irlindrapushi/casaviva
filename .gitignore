@@ -52,3 +52,6 @@ casaviva-marketing/config.properties
 /catalog/dist/
 /*.rar
 /shop/special_label_a4.css
+/shop/build/
+/shop/dist/
+/marketing/dist/

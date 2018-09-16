@@ -17,8 +17,11 @@
 
 package com.redis.aza.stock.admin.gui;
 
+import com.redis.aza.stock.admin.gui.catalog.DialogArticle;
 import com.redis.aza.stock.admin.core.Catalog;
-import com.redis.aza.stock.admin.sql.SqlCatalog;
+import com.redis.aza.stock.admin.core.State;
+import com.redis.aza.stock.admin.sql.CatalogSQL;
+import com.redis.aza.stock.admin.sql.state.SqlState;
 import com.redis.utils.export.ExcelIO;
 import java.awt.Component;
 import java.awt.Desktop;
@@ -26,12 +29,9 @@ import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -45,6 +45,9 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -52,131 +55,204 @@ import javax.swing.table.TableModel;
  */
 public class FrameCatalog extends javax.swing.JInternalFrame implements TableModelListener{
 	
-	private final Catalog catalog = SqlCatalog.getCatalog();
+	private final Catalog catalog = CatalogSQL.getCatalog();
+	private final State state = SqlState.getState();
+	
 	
 	public FrameCatalog() {
+		
 		initComponents();
 		
 		this.table.getModel().addTableModelListener(this);
 		
-		this.table.getColumn(5).setCellRenderer(new DefaultTableCellRenderer(){
-			DecimalFormat formatter = new DecimalFormat("###,###");
+		this.table.setDefaultRenderer(Number.class, new DefaultTableCellRenderer(){
+			DecimalFormat formatter = new DecimalFormat("###,##0.00");
 			@Override
 			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
 				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
 				
-				label.setHorizontalAlignment(RIGHT);
-				
-				Number val = (Number) jtable.getValueAt(i, i1 + 1);
-				Number min = (Number) jtable.getValueAt(i, i1);
-				if(val.floatValue() < min.floatValue()){
-					super.setText("<html><font color='red'><b>" + formatter.format(min) + "</font></html>");
-				}
-				else if(val.floatValue() == min.floatValue()){
-					super.setText("<html><font color='orange'><b>" + formatter.format(min) + "</font></html>");
-				}
-				else{
-					super.setText("<html><b>" + formatter.format(min) + "</html>");
-				}
-								
-				return label;
-			}
-			
-		});
-		this.table.getColumn(6).setCellRenderer(new DefaultTableCellRenderer(){
-			DecimalFormat formatter = new DecimalFormat("###,###");
-			@Override
-			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
-				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
-				
-				label.setHorizontalAlignment(RIGHT);
-				
-				Number val = (Number) jtable.getValueAt(i, i1);
-				Number min = (Number) jtable.getValueAt(i, i1-1);
-				if(val.floatValue() < min.floatValue()){
-					super.setText("<html><font color='red'><b>" + formatter.format(val) + "</font></html>");
-				}
-				else if(val.floatValue() == min.floatValue()){
-					super.setText("<html><font color='orange'><b>" + formatter.format(val) + "</font></html>");
-				}
-				else{
-					super.setText("<html><b>" + formatter.format(val) + "</html>");
-				}
-				
-				
-				return label;
-			}
-			
-		});
-		
-		this.table.getColumn(7).setCellRenderer(new IntegerCellRenderer());
-		this.table.getColumn(8).setCellRenderer(new IntegerCellRenderer());
-		this.table.getColumn(9).setCellRenderer(new IntegerCellRenderer());
-		this.table.getColumn(10).setCellRenderer(new IntegerCellRenderer());
-		this.table.getColumn(11).setCellRenderer(new IntegerCellRenderer());
-		this.table.getColumn(12).setCellRenderer(new IntegerCellRenderer());
-		
-		this.table.getColumn(12).setCellRenderer(new DefaultTableCellRenderer(){
-			private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); 
-			@Override
-			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
-				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);				
-				if(o instanceof Date) {
-					long diff = Date.from(Instant.now()).getTime() - ((Date) o).getTime();
-					long days = TimeUnit.MILLISECONDS.toDays(diff);
+				if(o instanceof Number) {
+					label.setHorizontalAlignment(RIGHT);
 					
-					if(days == 0)
-						label.setText("<html>"  + " <b>[Sot]</b> " + formatter.format(o) + "</html>");
-					else if( days == 1)
-						label.setText("<html>"  + " <b>[Dje]</b> " + formatter.format(o) + "</html>");
-					else{
-						label.setText("<html>"  + " <b>[" + days + "d]</b> " + formatter.format(o) + "</html>");
+					Double value = ((Number) o).doubleValue();
+					if(value < 0) {
+						super.setText("<html><font color='red'><b>" + formatter.format(value) + "</font></html>");
 					}
-					label.setHorizontalAlignment(JLabel.RIGHT);
-				}			
+					else if(value == 0) {
+						super.setText("<html><font color='orange'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else {
+						super.setText("<html><b>" + formatter.format(value) + "</html>");
+					}
+					
+					
+					
+					
+					if(jtable.getColumnName(i1).equals("Shitje")) {
+						Double buy = (Double) jtable.getValueAt(i, i1 - 2);
+						Double cost = (Double) jtable.getValueAt(i, i1 - 1);
+						Double sell = (Double) jtable.getValueAt(i, i1);
+						
+						setToolTipText(
+							"Marzhi Bruto: " + NumberFormat.getPercentInstance().format((sell - buy) / sell)
+						);
+					}
+				}		
+				
 				return label;
-			}		
+			}
+			
 		});
+		
+		this.table.getColumn("Marzhi").setCellRenderer(new DefaultTableCellRenderer(){
+			NumberFormat formatter = NumberFormat.getPercentInstance();
+			@Override
+			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
+				
+				if(o instanceof Number) {
+					label.setHorizontalAlignment(RIGHT);
+					
+					Double value = ((Number) o).doubleValue();
+					if(value < 0) {
+						super.setText("<html><font color='red'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else if(value == 0) {
+						super.setText("<html><font color='orange'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else {
+						super.setText("<html><b>" + formatter.format(value) + "</html>");
+					}
+				}		
+				
+				return label;
+			}
+			
+		});
+	
+//		
+//		this.table.getColumn(8).setCellRenderer(new IntegerCellRenderer());
+//		this.table.getColumn(9).setCellRenderer(new IntegerCellRenderer());
+//		this.table.getColumn(10).setCellRenderer(new IntegerCellRenderer());
+//		this.table.getColumn(11).setCellRenderer(new IntegerCellRenderer());
+//		this.table.getColumn(12).setCellRenderer(new IntegerCellRenderer());
+//		this.table.getColumn(13).setCellRenderer(new IntegerCellRenderer());
+//		
+//		this.table.getColumn(12).setCellRenderer(new DefaultTableCellRenderer(){
+//			private final SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy"); 
+//			@Override
+//			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+//				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);				
+//				if(o instanceof Date) {
+//					long diff = Date.from(Instant.now()).getTime() - ((Date) o).getTime();
+//					long days = TimeUnit.MILLISECONDS.toDays(diff);
+//					
+//					if(days == 0)
+//						label.setText("<html>"  + " <b>[Sot]</b> " + formatter.format(o) + "</html>");
+//					else if( days == 1)
+//						label.setText("<html>"  + " <b>[Dje]</b> " + formatter.format(o) + "</html>");
+//					else{
+//						label.setText("<html>"  + " <b>[" + days + "d]</b> " + formatter.format(o) + "</html>");
+//					}
+//					label.setHorizontalAlignment(JLabel.RIGHT);
+//				}			
+//				return label;
+//			}		
+//		});
 	}
+	
+	
+	
 	
 	private void clear() {
 		((DefaultTableModel) this.table.getModel()).setRowCount(0);
 		
 		this.searchField.setText("");
-		
-		this.checkMinimal.setSelected(false);
-		
 	}	
 	
-	private void reload() {		
+	
+	
+	private void reload() {
 		
-		this.catalog.forEach( item -> {
-			Object[] row = new Object[]{				
-				item.getCode(),
-				item.getBarcode(),
-				item.getCategory(),
-				item.getDescription(),
-				item.getSupplier(),
-				item.getMinStock(),
-				item.getStock(),
-				item.getCost(),
-				item.getBuyin(),
-				item.getWhoolsale(),
-				item.getRetail(),
-				item.getSpecial(),
-				item.getLastSellout()
-			};
-			
-			((DefaultTableModel) this.table.getModel()).addRow(row);
-		});
+		
+		this.refreshTree();
+		
+		
+		this.reloadTable();
 	}
 	
-	private void filter() {
+	
+	private void refreshTree() {
+		
+		DefaultMutableTreeNode catalogNode = new DefaultMutableTreeNode();
+		this.catalog.sectors().forEach(sector -> {
+			DefaultMutableTreeNode sectorNode = new DefaultMutableTreeNode(sector);
+			
+			this.catalog.categories(sector).forEach(category -> {
+				DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(category);
+				
+				sectorNode.add(categoryNode);
+			});
+			
+			catalogNode.add(sectorNode);
+		});
+		this.jXTree1.setModel(new DefaultTreeModel(catalogNode));
+		this.jXTree1.expandRow(0);
+		this.jXTree1.setSelectionRow(0);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	private void reloadTable() {
+		DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
+		tableModel.setRowCount(0);
+		
+		Object[] path = this.jXTree1.getSelectionPath().getPath();
+		
+		
+		this.catalog.items(path).forEach(item -> {
+			
+			Double buyPrice = catalog.costPrice(item);
+			Double costPrice = catalog.costPrice(item);
+			Double sellPrice = catalog.sellPrice(item);
+			Double sellMargin = (sellPrice - costPrice) / sellPrice;
+			
+			Object[] row = new Object[]{
+				catalog.barcode(item),
+				item.getCode(),
+				item.getName(),
+				item.getUnit(),
+				state.getMinWeight(item),
+				state.getWeight(item),
+				state.getPrice(item),
+				state.getValue(item),
+				buyPrice,
+				costPrice,
+				sellPrice,
+				sellMargin
+			};
+			
+			tableModel.addRow(row);
+		
+		});
+		
+	}
+	
+	
+	
+	
+	private void filterTableRows() {
 		List<RowFilter<TableModel, Integer>> filters = new ArrayList<>();
 		
-		filters.add(RowFilter.regexFilter("(?i)" + this.searchField.getText(), 0, 1, 2, 3, 4, 5, 6));
+		filters.add(RowFilter.regexFilter("(?i)" + this.searchField.getText(), 0, 1, 2, 3));
 				
-		if(checkMinimal.isSelected()) filters.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, 0.0f, 4));
+		
 		
 		if(checkCritical.isSelected()) {
 			RowFilter<TableModel, Integer> filter = new RowFilter<TableModel, Integer>() {
@@ -202,15 +278,18 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
           jButton1 = new javax.swing.JButton();
           filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           jButton2 = new javax.swing.JButton();
-          jPanel1 = new javax.swing.JPanel();
-          jScrollPane2 = new javax.swing.JScrollPane();
-          table = new org.jdesktop.swingx.JXTable();
+          jPanel2 = new javax.swing.JPanel();
           jToolBar5 = new javax.swing.JToolBar();
           searchField = new org.jdesktop.swingx.JXSearchField();
           filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-          checkMinimal = new javax.swing.JCheckBox();
           filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
           checkCritical = new javax.swing.JCheckBox();
+          jPanel1 = new javax.swing.JPanel();
+          jScrollPane2 = new javax.swing.JScrollPane();
+          table = new org.jdesktop.swingx.JXTable();
+          jPanel3 = new javax.swing.JPanel();
+          jScrollPane1 = new javax.swing.JScrollPane();
+          jXTree1 = new org.jdesktop.swingx.JXTree();
 
           setClosable(true);
           setIconifiable(true);
@@ -264,6 +343,42 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 
           getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
+          jPanel2.setLayout(new java.awt.BorderLayout());
+
+          jToolBar5.setFloatable(false);
+          jToolBar5.setRollover(true);
+
+          searchField.setColumns(25);
+          searchField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+          searchField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+          searchField.setMaximumSize(new java.awt.Dimension(242, 20));
+          searchField.setPreferredSize(new java.awt.Dimension(242, 20));
+          searchField.setPrompt("Kerko ...");
+          searchField.addActionListener(new java.awt.event.ActionListener() {
+               public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    searchFieldActionPerformed(evt);
+               }
+          });
+          jToolBar5.add(searchField);
+          jToolBar5.add(filler1);
+          jToolBar5.add(filler2);
+
+          checkCritical.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
+          checkCritical.setForeground(java.awt.Color.red);
+          checkCritical.setText("Sasi Kritike");
+          checkCritical.setFocusable(false);
+          checkCritical.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+          checkCritical.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+          checkCritical.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+          checkCritical.addChangeListener(new javax.swing.event.ChangeListener() {
+               public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                    checkCriticalStateChanged(evt);
+               }
+          });
+          jToolBar5.add(checkCritical);
+
+          jPanel2.add(jToolBar5, java.awt.BorderLayout.PAGE_END);
+
           jPanel1.setLayout(new java.awt.BorderLayout());
 
           table.setModel(new javax.swing.table.DefaultTableModel(
@@ -271,14 +386,14 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 
                },
                new String [] {
-                    "Kodi", "Barkodi", "Kategoria", "Pershkrimi", "Fornitori", "Sasi Min.", "Sasia", "Kosto", "Blerje", "Shitje Sh.", "Cmim Shitje", "Cmim Oferte", "Shitja e Fundit"
+                    "Barkodi", "Kodi", "Pershkrimi", "Njesia", "Sasi Min.", "Sasia", "Cmimi", "Vlera", "Blerje", "Kosto", "Shitje", "Marzhi"
                }
           ) {
                Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class, java.lang.Object.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
                };
                boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, true, false, false, false, false, false, false, false
+                    false, false, false, false, true, false, false, false, false, false, false, false
                };
 
                public Class getColumnClass(int columnIndex) {
@@ -299,10 +414,10 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
           });
           jScrollPane2.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
-               table.getColumnModel().getColumn(0).setPreferredWidth(50);
-               table.getColumnModel().getColumn(2).setPreferredWidth(100);
-               table.getColumnModel().getColumn(3).setPreferredWidth(300);
-               table.getColumnModel().getColumn(4).setPreferredWidth(100);
+               table.getColumnModel().getColumn(1).setPreferredWidth(50);
+               table.getColumnModel().getColumn(2).setPreferredWidth(300);
+               table.getColumnModel().getColumn(3).setPreferredWidth(50);
+               table.getColumnModel().getColumn(4).setPreferredWidth(50);
                table.getColumnModel().getColumn(5).setPreferredWidth(50);
                table.getColumnModel().getColumn(6).setPreferredWidth(50);
                table.getColumnModel().getColumn(7).setPreferredWidth(50);
@@ -310,59 +425,29 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
                table.getColumnModel().getColumn(9).setPreferredWidth(50);
                table.getColumnModel().getColumn(10).setPreferredWidth(50);
                table.getColumnModel().getColumn(11).setPreferredWidth(50);
-               table.getColumnModel().getColumn(12).setPreferredWidth(100);
           }
 
           jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
-          getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+          jPanel2.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-          jToolBar5.setFloatable(false);
-          jToolBar5.setRollover(true);
+          getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
-          searchField.setColumns(25);
-          searchField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-          searchField.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-          searchField.setMaximumSize(new java.awt.Dimension(242, 20));
-          searchField.setPreferredSize(new java.awt.Dimension(242, 20));
-          searchField.setPrompt("Kerko ...");
-          searchField.addActionListener(new java.awt.event.ActionListener() {
-               public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    searchFieldActionPerformed(evt);
+          jPanel3.setPreferredSize(new java.awt.Dimension(250, 100));
+          jPanel3.setLayout(new java.awt.BorderLayout());
+
+          javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("KATALOGU");
+          jXTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+          jXTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+               public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                    jXTree1ValueChanged(evt);
                }
           });
-          jToolBar5.add(searchField);
-          jToolBar5.add(filler1);
+          jScrollPane1.setViewportView(jXTree1);
 
-          checkMinimal.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-          checkMinimal.setText("Sasi Minimale");
-          checkMinimal.setFocusable(false);
-          checkMinimal.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-          checkMinimal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-          checkMinimal.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-          checkMinimal.addChangeListener(new javax.swing.event.ChangeListener() {
-               public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                    checkMinimalStateChanged(evt);
-               }
-          });
-          jToolBar5.add(checkMinimal);
-          jToolBar5.add(filler2);
+          jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-          checkCritical.setFont(new java.awt.Font("Tahoma", 1, 10)); // NOI18N
-          checkCritical.setForeground(java.awt.Color.red);
-          checkCritical.setText("Sasi Kritike");
-          checkCritical.setFocusable(false);
-          checkCritical.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-          checkCritical.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-          checkCritical.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-          checkCritical.addChangeListener(new javax.swing.event.ChangeListener() {
-               public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                    checkCriticalStateChanged(evt);
-               }
-          });
-          jToolBar5.add(checkCritical);
-
-          getContentPane().add(jToolBar5, java.awt.BorderLayout.PAGE_END);
+          getContentPane().add(jPanel3, java.awt.BorderLayout.WEST);
 
           pack();
      }// </editor-fold>//GEN-END:initComponents
@@ -373,15 +458,11 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
      }//GEN-LAST:event_jButton1ActionPerformed
 
      private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-        this.filter();
+        this.filterTableRows();
      }//GEN-LAST:event_searchFieldActionPerformed
 
-     private void checkMinimalStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkMinimalStateChanged
-          this.filter();
-     }//GEN-LAST:event_checkMinimalStateChanged
-
      private void checkCriticalStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_checkCriticalStateChanged
-          this.filter();
+          this.filterTableRows();
      }//GEN-LAST:event_checkCriticalStateChanged
 
      private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -397,9 +478,9 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 			int row = this.table.rowAtPoint(evt.getPoint());
 			int col = this.table.columnAtPoint(evt.getPoint());
 			if(row != -1 && col != 4) {
-				String item = (String) this.table.getValueAt(row, 0);
-				DialogCatalogItem dialog = new DialogCatalogItem((Frame) SwingUtilities.getWindowAncestor(this));
-				dialog.setItemCode(item);
+				String item = (String) this.table.getValueAt(row, 1);
+				DialogArticle dialog = new DialogArticle((Frame) SwingUtilities.getWindowAncestor(this));
+				dialog.setArticle(this.catalog.getArticle(item));
 				dialog.setLocationRelativeTo(this);
 				dialog.setVisible(true);
 			}
@@ -410,19 +491,37 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
           this.reload();
      }//GEN-LAST:event_formInternalFrameOpened
 
+     private void jXTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jXTree1ValueChanged
+          TreePath treePath = evt.getPath();
+		if(evt.getPath() != null && evt.getPath().getPathCount() > 0) {
+			if(evt.getPath().getLastPathComponent() instanceof DefaultMutableTreeNode) {
+				Object userObject = ((DefaultMutableTreeNode) evt.getPath().getLastPathComponent()).getUserObject();
+				if(userObject instanceof Catalog.Node) {
+					((Catalog.Node) userObject).articles().forEach(item -> {});
+				}
+			}
+		}
+		
+		
+		this.reloadTable();
+     }//GEN-LAST:event_jXTree1ValueChanged
+
 
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.JCheckBox checkCritical;
-     private javax.swing.JCheckBox checkMinimal;
      private javax.swing.Box.Filler filler1;
      private javax.swing.Box.Filler filler2;
      private javax.swing.Box.Filler filler7;
      private javax.swing.JButton jButton1;
      private javax.swing.JButton jButton2;
      private javax.swing.JPanel jPanel1;
+     private javax.swing.JPanel jPanel2;
+     private javax.swing.JPanel jPanel3;
+     private javax.swing.JScrollPane jScrollPane1;
      private javax.swing.JScrollPane jScrollPane2;
      private javax.swing.JToolBar jToolBar1;
      private javax.swing.JToolBar jToolBar5;
+     private org.jdesktop.swingx.JXTree jXTree1;
      private org.jdesktop.swingx.JXSearchField searchField;
      private org.jdesktop.swingx.JXTable table;
      // End of variables declaration//GEN-END:variables
@@ -434,7 +533,7 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 		
 		if(tme.getFirstRow() > -1 && tme.getFirstRow() == tme.getLastRow()){
 			if(tme.getType() == TableModelEvent.UPDATE){
-				if(tme.getColumn() == 5){
+				if(tme.getColumn() == 4){
 					TableModel model = (TableModel) tme.getSource();
 					String columnName = model.getColumnName(col);
 					Object data = model.getValueAt(row, col);
@@ -442,9 +541,9 @@ public class FrameCatalog extends javax.swing.JInternalFrame implements TableMod
 					System.out.println(columnName + "(" + row + ") = " + data);
 					
 					
-					String item = (String) model.getValueAt(row, 0);
-					Float value = ((Number) model.getValueAt(row, 5)).floatValue();
-					boolean success = SqlCatalog.updateMinStock(item, value);
+					String item = (String) model.getValueAt(row, 1);
+					Float value = ((Number) model.getValueAt(row, 4)).floatValue();
+					boolean success = CatalogSQL.updateMinStock(item, value);
 					if(!success)
 						JOptionPane.showMessageDialog(this, "Gabim gjate ndryshimit te vleres!", "Error SQL", JOptionPane.ERROR_MESSAGE);
 				}

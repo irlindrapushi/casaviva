@@ -17,8 +17,11 @@
 
 package com.redis.aza.stock.admin.core;
 
+import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -29,6 +32,27 @@ public interface Sellout {
 	public List<Story> getStories();
 	public List<Story> getStories(Date minDate, Date maxDate);
 	public List<Event> getEvents(String itemCode);
+	
+	public State getState();
+	
+	public interface State {
+//		private final Map<String, Double> weights = new HashMap<>();
+//		private final Map<String, Double> values = new HashMap<>();
+//		private final Map<String, Instant> firstEvent = new HashMap<>();
+//		private final Map<String, Instant> lastEvent = new HashMap<>();
+		
+		
+		
+		public Double getWeight();
+		public Double getValue();
+		
+		public Double getWeight(Item item);
+		public Double getValue(Item item);
+		public Instant getFirstEvent(Item item);
+		public Instant getLastEvent(Item item);
+	}
+	
+	
 	
 	public class Story {
 		private final String code, description, unit;

@@ -35,7 +35,6 @@ import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -110,7 +109,7 @@ public class DialogDateSellouts extends javax.swing.JDialog {
 		this.series.clear();		
 		((DefaultTableModel) this.table.getModel()).setRowCount(0);
 		
-		
+		this.fieldValue.setValue(0.0d);
 		
 		
 		
@@ -126,6 +125,8 @@ public class DialogDateSellouts extends javax.swing.JDialog {
 		this.series.fireSeriesChanged();
 		
 		SqlSellout.getSellout().getStories(minDate, maxDate).forEach( story -> {
+			Double value = story.getSumValue().doubleValue();
+			
 			Object[] row = new Object[]{
 				story.getCode(),
 				story.getDescription(),
@@ -137,6 +138,10 @@ public class DialogDateSellouts extends javax.swing.JDialog {
 			};
 			
 			((DefaultTableModel) this.table.getModel()).addRow(row);
+			
+			Double valueSum = (Double) this.fieldValue.getValue();
+			valueSum += value;
+			this.fieldValue.setValue(valueSum);
 		});
 		
 	}	
@@ -167,9 +172,10 @@ public class DialogDateSellouts extends javax.swing.JDialog {
           table = new org.jdesktop.swingx.JXTable();
           panelChartHost = new javax.swing.JPanel();
           jToolBar2 = new javax.swing.JToolBar();
-          filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           searchField = new org.jdesktop.swingx.JXSearchField();
           filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+          jLabel2 = new javax.swing.JLabel();
+          fieldValue = new javax.swing.JFormattedTextField();
 
           setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
           setTitle("ARTIKUJT: STATISTIKA SHITJE");
@@ -278,7 +284,6 @@ public class DialogDateSellouts extends javax.swing.JDialog {
 
           jToolBar2.setFloatable(false);
           jToolBar2.setRollover(true);
-          jToolBar2.add(filler5);
 
           searchField.setColumns(25);
           searchField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -293,6 +298,18 @@ public class DialogDateSellouts extends javax.swing.JDialog {
           });
           jToolBar2.add(searchField);
           jToolBar2.add(filler3);
+
+          jLabel2.setText("Total Vlera:");
+          jToolBar2.add(jLabel2);
+
+          fieldValue.setEditable(false);
+          fieldValue.setColumns(10);
+          fieldValue.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+          fieldValue.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+          fieldValue.setText("0.00");
+          fieldValue.setMaximumSize(new java.awt.Dimension(109, 20));
+          fieldValue.setMinimumSize(new java.awt.Dimension(109, 20));
+          jToolBar2.add(fieldValue);
 
           getContentPane().add(jToolBar2, java.awt.BorderLayout.PAGE_END);
 
@@ -322,14 +339,15 @@ public class DialogDateSellouts extends javax.swing.JDialog {
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private org.jdesktop.swingx.JXDatePicker datePickerMax;
      private org.jdesktop.swingx.JXDatePicker datePickerMin;
+     private javax.swing.JFormattedTextField fieldValue;
      private javax.swing.Box.Filler filler1;
      private javax.swing.Box.Filler filler2;
      private javax.swing.Box.Filler filler3;
      private javax.swing.Box.Filler filler4;
-     private javax.swing.Box.Filler filler5;
      private javax.swing.JButton jButton1;
      private javax.swing.JButton jButton2;
      private javax.swing.JLabel jLabel1;
+     private javax.swing.JLabel jLabel2;
      private javax.swing.JScrollPane jScrollPane1;
      private javax.swing.JSplitPane jSplitPane1;
      private javax.swing.JToolBar jToolBar1;

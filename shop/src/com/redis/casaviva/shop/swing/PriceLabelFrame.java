@@ -522,13 +522,13 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
      }//GEN-LAST:event_jButton1ActionPerformed
 
      private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-          TableModel tableModel = (TableModel) table.getModel();
-		File file = LabelHTMLExport.exportHtmlFromPriceLables3x2("./temp/price_label_export.html", tableModel.getPriceLabels());
-          try {
-               Desktop.getDesktop().open(file);
-          } catch (IOException ex) {
-               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
-          }
+//          TableModel tableModel = (TableModel) table.getModel();
+//		File file = LabelHTMLExport.exportHtmlFromPriceLables3x2("./temp/price_label_export.html", tableModel.getPriceLabels());
+//          try {
+//               Desktop.getDesktop().open(file);
+//          } catch (IOException ex) {
+//               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
+//          }
      }//GEN-LAST:event_jButton3ActionPerformed
 
      private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -567,23 +567,23 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
      }//GEN-LAST:event_treeValueChanged
 
      private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-          TableModel tableModel = (TableModel) table.getModel();
-		File file = LabelHTMLExport.exportHtmlFromPriceLables2("./temp/price_label_export_2x6.html", tableModel.getPriceLabels());
-          try {
-               Desktop.getDesktop().open(file);
-          } catch (IOException ex) {
-               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
-          }
+//          TableModel tableModel = (TableModel) table.getModel();
+//		File file = LabelHTMLExport.exportHtmlFromPriceLables2("./temp/price_label_export_2x6.html", tableModel.getPriceLabels());
+//          try {
+//               Desktop.getDesktop().open(file);
+//          } catch (IOException ex) {
+//               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
+//          }
      }//GEN-LAST:event_jButton6ActionPerformed
 
      private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-          TableModel tableModel = (TableModel) table.getModel();
-		File file = LabelHTMLExport.exportHtmlFromPriceLables3("./temp/price_label_export_2x3.html", tableModel.getPriceLabels());
-          try {
-               Desktop.getDesktop().open(file);
-          } catch (IOException ex) {
-               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
-          }
+//          TableModel tableModel = (TableModel) table.getModel();
+//		File file = LabelHTMLExport.exportHtmlFromPriceLables3("./temp/price_label_export_2x3.html", tableModel.getPriceLabels());
+//          try {
+//               Desktop.getDesktop().open(file);
+//          } catch (IOException ex) {
+//               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
+//          }
      }//GEN-LAST:event_jButton7ActionPerformed
 
 

@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class Stock {
 	private final String code, name, location;
-	private final Map<String, Float> quantities;
+	private final Map<String, Double> quantities;
 
 	public Stock(String code, String name, String location) {		
 		this.code = code;
@@ -44,19 +44,19 @@ public class Stock {
 		return location;
 	}
 
-	public Float getQuantity(Article product) {
-		return quantities.getOrDefault(product.getCode(), 0.0f);
+	public Double getQuantity(Article product) {
+		return quantities.getOrDefault(product.getCode(), 0.0d);
 	}
 	
-	public Float getQuantity(String productCode) {
-		return quantities.getOrDefault(productCode, 0.0f);
+	public Double getQuantity(String productCode) {
+		return quantities.getOrDefault(productCode, 0.0d);
 	}
 	
-	public void setQuanity(Article product, Float quantity) {
+	public void setQuanity(Article product, Double quantity) {
 		this.quantities.put(product.getCode(), quantity);
 	}
 	
-	public void setQuanity(String productCode, Float quantity) {
+	public void setQuanity(String productCode, Double quantity) {
 		this.quantities.put(productCode, quantity);
 	}
 
@@ -82,7 +82,7 @@ public class Stock {
 				PreparedStatement ps1 = cn.prepareStatement(SQL1);
 				ps1.setString(1, stock.code);
 				ResultSet rs1 = ps1.executeQuery();
-				while(rs1.next()) { stock.setQuanity(rs1.getString("KARTLLG"), rs1.getFloat("SASI"));}
+				while(rs1.next()) { stock.setQuanity(rs1.getString("KARTLLG"), rs1.getDouble("SASI"));}
 				
 				stockList.add(stock);
 			}

@@ -78,8 +78,8 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           jProgressBar1 = new javax.swing.JProgressBar();
           filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           jButton1 = new javax.swing.JButton();
-          jButton3 = new javax.swing.JButton();
           jButton6 = new javax.swing.JButton();
+          jButton3 = new javax.swing.JButton();
 
           tableModel.addTableModelListener(new javax.swing.event.TableModelListener() {
                public void tableChanged(javax.swing.event.TableModelEvent evt) {
@@ -265,6 +265,7 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           jToolBar3.add(filler4);
 
           jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/excel_24.png"))); // NOI18N
+          jButton1.setText("EXPORT");
           jButton1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
           jButton1.setFocusable(false);
           jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -277,20 +278,8 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
           });
           jToolBar3.add(jButton1);
 
-          jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/print_24.png"))); // NOI18N
-          jButton3.setText("297 x 210");
-          jButton3.setFocusable(false);
-          jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-          jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-          jButton3.addActionListener(new java.awt.event.ActionListener() {
-               public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton3ActionPerformed(evt);
-               }
-          });
-          jToolBar3.add(jButton3);
-
           jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/print_24.png"))); // NOI18N
-          jButton6.setText("297 x 210");
+          jButton6.setText("SMALL");
           jButton6.setFocusable(false);
           jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
           jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -300,6 +289,18 @@ public class SpecialLabelFrame extends javax.swing.JInternalFrame {
                }
           });
           jToolBar3.add(jButton6);
+
+          jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/print_24.png"))); // NOI18N
+          jButton3.setText("LARGE");
+          jButton3.setFocusable(false);
+          jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+          jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+          jButton3.addActionListener(new java.awt.event.ActionListener() {
+               public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    jButton3ActionPerformed(evt);
+               }
+          });
+          jToolBar3.add(jButton3);
 
           getContentPane().add(jToolBar3, java.awt.BorderLayout.PAGE_START);
 

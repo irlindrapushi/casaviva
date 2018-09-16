@@ -10,6 +10,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.text.DecimalFormat;
+import java.text.FieldPosition;
+import java.text.NumberFormat;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 
 /**
@@ -42,7 +46,8 @@ public class FrameMain extends javax.swing.JFrame {
 	public FrameMain() {
 		initComponents();	
 		
-		
+		this.jXTable1.getTableHeader().setReorderingAllowed(false);
+		this.jXTable1.setSortable(false);
 	}
 	
 	private void reload() {
@@ -58,13 +63,25 @@ public class FrameMain extends javax.swing.JFrame {
 		this.articles = Article.geProductList();
 		this.stocks = Stock.getStockList();
 		
-		List headerList = new ArrayList<>(Arrays.asList("Kodi", "Sektori", "Kateogoria", "Emertimi", "Shitje", "Oferte", "Data/Ora"));
-		
-		
-		this.stocks.forEach( stock -> {
-			headerList.add(stock);
-		});
-		headerList.add("TOT");
+		List headerList = new ArrayList<>(
+			Arrays.asList(
+				"Kodi", 
+				"Sektori", 
+				"Kategoria", 
+				"Fornitori", 
+				"Barkodi", 
+				"Emertimi", 
+				"Blerje", 
+				"Kosto", 
+				"Shitje", 
+				"Oferte",
+				"Marzhi",
+				"Data/Ora",
+				"M01", 
+				"M02",
+				"TOT"
+			)
+		);
 		
 		System.out.println(stocks);
 		Object[] header = headerList.toArray(new Object[0]);
@@ -74,12 +91,21 @@ public class FrameMain extends javax.swing.JFrame {
 			@Override
 			public boolean isCellEditable(int i, int i1) {
 				switch(i1){
+					case 0: return false;
 					case 1: return jToggleButton1.isSelected();
 					case 2: return jToggleButton1.isSelected();
 					case 3: return jToggleButton1.isSelected();
 					case 4: return jToggleButton1.isSelected();
 					case 5: return jToggleButton1.isSelected();
-					case 6: return jToggleButton1.isSelected();
+					case 6: return false;
+					case 7: return false;
+					case 8: return jToggleButton1.isSelected();
+					case 9: return jToggleButton1.isSelected();
+					case 10: return jToggleButton1.isSelected();
+					case 11: return false;
+					case 12: return false;
+					case 13: return false;
+					case 14: return false;
 					default: return false;
 				}
 			}
@@ -91,37 +117,60 @@ public class FrameMain extends javax.swing.JFrame {
 					case 1: return String.class;
 					case 2: return String.class;
 					case 3: return String.class;
-					case 4: return Double.class;
-					case 5: return Double.class;
-					case 6: return Instant.class;
-					default: return Float.class;
+					case 4: return String.class;
+					case 5: return String.class;
+					case 6: return Double.class;
+					case 7: return Double.class;
+					case 8: return Double.class;
+					case 9: return Double.class;
+					case 10: return Double.class;
+					case 11: return Instant.class;
+					case 12: return Double.class;
+					case 13: return Double.class;
+					case 14: return Double.class;
+					default: return null;
 				}
 			}	
 
 			@Override
 			public Object getValueAt(int i, int i1) {
 				Article p = articles.get(i);
+				Double q0 = stocks.get(0).getQuantity(p);
+				Double q1 = stocks.get(1).getQuantity(p);
+				Double sellPrice = (p.getSellPriceTemp() > 1 ? p.getSellPriceTemp() : p.getSellPrice());
+				Double sellPriceMarge = (sellPrice - p.getCostPrice()) / sellPrice;
 				switch(i1){
 					case 0: return p.getCode();
 					case 1: return p.getSector();
 					case 2: return p.getCategory();
-					case 3: return p.getName();
-					case 4: return p.getSellPrice();
-					case 5: return p.getSellPriceTemp();
-					case 6: return p.getInstant();
+					case 3: return p.getSupplier();
+					case 4: return p.getBarcode();
+					case 5: return p.getName();
+					case 6: return p.getBuyPrice();
+					case 7: return p.getCostPrice();
+					case 8: return p.getSellPrice();
+					case 9: return p.getSellPriceTemp();
+					case 10: return sellPriceMarge;
+					case 11: return p.getInstant();
+					case 12: return q0;
+					case 13: return q1;
+					case 14: return q0 + q1;
 					default: return super.getValueAt(i, i1);
 				}
 			}			
 
 			@Override
 			public void setValueAt(Object o, int i, int i1) {
+				
 				Article p = articles.get(i);
 				switch(i1){
 					case 1: if(o instanceof String) p.setSector((String) o); break;
 					case 2: if(o instanceof String) p.setCategory((String) o); break;
-					case 3: if(o instanceof String) p.setName((String) o); break;
-					case 4: if(o instanceof Number) p.setSellPrice(((Number) o).doubleValue()); break;
-					case 5: if(o instanceof Number) p.setSellPriceTemp(((Number) o).doubleValue()); break;
+					case 3: if(o instanceof String) p.setSupplier((String) o); break;
+					case 4: if(o instanceof String) p.setBarcode((String) o); break;
+					case 5: if(o instanceof String) p.setName((String) o); break;
+					case 8: if(o instanceof Number) p.setSellPrice(((Number) o).doubleValue()); break;
+					case 9: if(o instanceof Number) p.setSellPriceTemp(((Number) o).doubleValue()); break;
 					default: super.setValueAt(o, i, i1); return;
 				}
 				super.fireTableRowsUpdated(i, i);
@@ -149,40 +198,131 @@ public class FrameMain extends javax.swing.JFrame {
 			}
 			
 		});
+		
+		this.jXTable1.setDefaultRenderer(Number.class, new DefaultTableCellRenderer(){
+			DecimalFormat formatter = new DecimalFormat("###,##0.00");
+			NumberFormat percentFormatter = NumberFormat.getPercentInstance();
+			@Override
+			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
 				
-		
-		
-		
-		for(int row = 0; row<tableModel.getRowCount(); row++){
-			String code = (String) tableModel.getValueAt(row, 0);
-			float sum = 0.0f;
-			for(int col = 7; col < 7 + this.stocks.size(); col ++) {
-				Float val = this.stocks.get(col-7).getQuantity(code);
-				tableModel.setValueAt(val, row, col);
-				sum += val;
+				if(o instanceof Number) {
+					label.setHorizontalAlignment(RIGHT);
+					
+					Double value = ((Number) o).doubleValue();
+					if(value < 0) {
+						super.setText("<html><font color='red'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else if(value == 0) {
+						super.setText("<html><font color='orange'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else {
+						super.setText("<html><b>" + formatter.format(value) + "</html>");
+					}
+				}
 				
+				if(i1 == 10) {
+					percentFormatter.format(o);
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				return label;
 			}
-			tableModel.setValueAt(sum, row, 9);
-		}
+			
+		});
+		
+		this.jXTable1.getColumn(10).setCellRenderer(new DefaultTableCellRenderer(){
+			NumberFormat formatter = NumberFormat.getPercentInstance();
+			@Override
+			public Component getTableCellRendererComponent(JTable jtable, Object o, boolean bln, boolean bln1, int i, int i1) {
+				JLabel label = (JLabel) super.getTableCellRendererComponent(jtable, o, bln, bln1, i, i1);
+				
+				if(o instanceof Number) {
+					label.setHorizontalAlignment(RIGHT);
+					
+					Double value = ((Number) o).doubleValue();
+					if(value < 0) {
+						super.setText("<html><font color='red'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else if(value == 0) {
+						super.setText("<html><font color='orange'><b>" + formatter.format(value) + "</font></html>");
+					}
+					else {
+						super.setText("<html><b>" + formatter.format(value) + "</html>");
+					}
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				return label;
+			}
+			
+		});
+			
 		
 		for(int col = 0; col < this.jXTable1.getColumnCount(); col++){
 			switch (col) {
+				case 0:
+					this.jXTable1.packColumn(col, 50);
+					break;
 				case 1:
+					this.jXTable1.packColumn(col, 100);
+					break;
 				case 2:
-				case 6:
-					this.jXTable1.packColumn(col, 150);
+					this.jXTable1.packColumn(col, 100);
 					break;
 				case 3:
+					this.jXTable1.packColumn(col, 100);
+					break;
+				case 4:
+					this.jXTable1.packColumn(col, 100);
+					break;
+				case 5:
 					this.jXTable1.packColumn(col, 300);
+					break;
+				case 6:
+					this.jXTable1.packColumn(col, 50);
+					break;
+				case 7:
+					this.jXTable1.packColumn(col, 50);
+					break;
+				case 8:
+					this.jXTable1.packColumn(col, 50);
+					break;
+				case 9:
+					this.jXTable1.packColumn(col, 50);
+					break;
+				case 10:
+					this.jXTable1.packColumn(col, 50);
+					break;
+				case 11:
+					this.jXTable1.packColumn(col, 100);
 					break;
 				default:
 					this.jXTable1.packColumn(col, 50);
-					break;
+					return;
 			}
 		}
 		
 		
-		this.jXTable1.setDefaultRenderer(Float.class, new DefaultTableCellRenderer(){
+		this.jXTable1.setDefaultRenderer(Double.class, new DefaultTableCellRenderer(){
 			DecimalFormat formatter = new DecimalFormat("###,###");
 			@Override
 			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -210,11 +350,11 @@ public class FrameMain extends javax.swing.JFrame {
 	private void filter() {
 		List<RowFilter<TableModel, Integer>> filters = new ArrayList();
 		
-		filters.add(RowFilter.regexFilter("(?i)" + this.searchField.getText(), 0, 1, 2));
+		filters.add(RowFilter.regexFilter("(?i)" + this.searchField.getText(), 0, 1, 2, 3, 4, 5));
 		
-		if(this.jCheckBox1.isSelected()) filters.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, 1.0f, 4));
+		if(this.jCheckBox1.isSelected()) filters.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, 1.0d, 9));
 		
-		if(this.jCheckBox2.isSelected()) filters.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, 0.0f, 9));
+		if(this.jCheckBox2.isSelected()) filters.add(RowFilter.numberFilter(RowFilter.ComparisonType.AFTER, 0.0d, 12));
 		
 		
 		String sector = "";
@@ -265,12 +405,51 @@ public class FrameMain extends javax.swing.JFrame {
 				this.articles.stream().filter((Article t) -> Objects.equals(sector, t.getSector())).map(Article::getCategory).distinct().sorted().forEach(category -> {
 					if(!category.isEmpty()) {
 						DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(category){
-						@Override
-						public boolean isLeaf() {
-							return true;
-						}
-					};
+							@Override
+							public boolean isLeaf() {
+								return false;
+							}
+						};
+						
+						
+						
+						this.articles
+							.stream()
+								.filter((Article t) -> (Objects.equals(sector, t.getSector()) && Objects.equals(category, t.getCategory())))
+								.map(Article::getSupplier)
+								.distinct()
+								.sorted()
+								.forEach(supplier -> {
+									if(supplier .isEmpty() ){
+										DefaultMutableTreeNode supplierNode = new DefaultMutableTreeNode(supplier){
+											@Override
+											public boolean isLeaf() {
+												return true;
+											}
+										};
 
+										categoryNode.add(supplierNode);
+									}
+						
+									
+						});
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 						sectorNode.add(categoryNode);
 					}
 				});
@@ -294,6 +473,8 @@ public class FrameMain extends javax.swing.JFrame {
           jButton1 = new javax.swing.JButton();
           filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           jToggleButton1 = new javax.swing.JToggleButton();
+          jScrollPane2 = new javax.swing.JScrollPane();
+          jXTree1 = new org.jdesktop.swingx.JXTree();
           jPanel2 = new javax.swing.JPanel();
           jToolBar2 = new javax.swing.JToolBar();
           filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
@@ -305,8 +486,6 @@ public class FrameMain extends javax.swing.JFrame {
           filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
           jScrollPane1 = new javax.swing.JScrollPane();
           jXTable1 = new org.jdesktop.swingx.JXTable();
-          jScrollPane2 = new javax.swing.JScrollPane();
-          jXTree1 = new org.jdesktop.swingx.JXTree();
 
           setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
           setTitle("CASAVIVA 2018 - KATALOGU");
@@ -349,6 +528,19 @@ public class FrameMain extends javax.swing.JFrame {
           jToolBar1.add(jToggleButton1);
 
           getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+          jScrollPane2.setPreferredSize(new java.awt.Dimension(240, 324));
+
+          javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
+          jXTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+          jXTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+               public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                    jXTree1ValueChanged(evt);
+               }
+          });
+          jScrollPane2.setViewportView(jXTree1);
+
+          getContentPane().add(jScrollPane2, java.awt.BorderLayout.WEST);
 
           jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -414,25 +606,12 @@ public class FrameMain extends javax.swing.JFrame {
           ));
           jXTable1.setColumnSelectionAllowed(true);
           jXTable1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-          jXTable1.setShowVerticalLines(false);
+          jXTable1.setHighlighters(HighlighterFactory.createAlternateStriping());
           jXTable1.setSortable(false);
           jScrollPane1.setViewportView(jXTable1);
           jXTable1.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
           jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-          jScrollPane2.setPreferredSize(new java.awt.Dimension(240, 324));
-
-          javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("root");
-          jXTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-          jXTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
-               public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
-                    jXTree1ValueChanged(evt);
-               }
-          });
-          jScrollPane2.setViewportView(jXTree1);
-
-          jPanel2.add(jScrollPane2, java.awt.BorderLayout.LINE_START);
 
           getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 

@@ -17,27 +17,38 @@
 
 package com.redis.aza.stock.admin.gui;
 
+import com.redis.aza.stock.admin.core.Catalog;
+import com.redis.aza.stock.admin.core.State;
 import com.redis.aza.stock.admin.core.Stock;
+import com.redis.aza.stock.admin.sql.CatalogSQL;
 import com.redis.aza.stock.admin.sql.SqlStock;
 import com.redis.utils.export.ExcelIO;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
  * @author Redjan Shabani
  */
 public class FrameStock extends javax.swing.JInternalFrame {
+	Catalog catalog = CatalogSQL.getCatalog();
 	private final Stock stock = SqlStock.getStock();
+	
+	
 	
 	public FrameStock() {
 		initComponents();
@@ -45,41 +56,107 @@ public class FrameStock extends javax.swing.JInternalFrame {
 		this.table.setDefaultRenderer(Float.class, new IntegerCellRenderer());
 	}
 	
+	
 	private void reload() {
-		
 		this.jXSearchField1.setText("");
 		this.checkZero.setSelected(true);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
-		tableModel.setRowCount(0);		
-		boolean success =stock.forEach(item -> {
-			Object[] row = new Object[]{
-				item.getCode(),
-				item.getDescription(),
-				item.getUnit(),
-				item.getQuantity(),
-				item.getQuantity("M01"),
-				item.getQuantity("M02")
-			};
-
-			tableModel.addRow(row);		
-		});
-		
-		if(!success){
-			JOptionPane.showMessageDialog(this, "Gabim gjate leximit nga serveri!", "Gabim Serveri!", JOptionPane.ERROR_MESSAGE);
-		}
+		refreshTree();
+		refreshTable();
 		
 	}
+	
+	private void refreshTree() {
+		
+		DefaultMutableTreeNode catalogNode = new DefaultMutableTreeNode();
+		this.catalog.sectors().forEach(sector -> {
+			DefaultMutableTreeNode sectorNode = new DefaultMutableTreeNode(sector);
+			
+			this.catalog.categories(sector).forEach(category -> {
+				DefaultMutableTreeNode categoryNode = new DefaultMutableTreeNode(category);
+				
+				sectorNode.add(categoryNode);
+			});
+			
+			catalogNode.add(sectorNode);
+		});
+		this.jXTree1.setModel(new DefaultTreeModel(catalogNode));
+		this.jXTree1.expandRow(0);
+		this.jXTree1.setSelectionRow(0);
+	}
+	
+	
+	
+	
+	
+	private void refreshTable() {
+		DefaultTableModel tableModel = (DefaultTableModel) this.table.getModel();
+		tableModel.setRowCount(0);
+		List<Object> header = new ArrayList<>();
+		header.addAll(Arrays.asList("Barkodi", "Kodi", "Emertimi", "Njesia"));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		List<State> states = new ArrayList<>();		
+		states.add(stock.getState());
+		header.add("Sasia");
+		
+		this.stock.warehouses().forEach(warehouse -> {
+			header.add(warehouse);
+			states.add(warehouse.getState());
+		});
+		
+		tableModel.setColumnIdentifiers(header.toArray());
+		
+		
+		
+		
+		
+		
+		Object[] path = this.jXTree1.getSelectionPath().getPath();	
+		catalog.items(path).forEach(item -> {
+			List<Object> row = new ArrayList<>();
+			row.add(catalog.barcode(item));
+			row.add(item.getCode());
+			row.add(item.getName());
+			row.add(item.getUnit());
+			
+			states.forEach(state -> row.add(state.getWeight(item)));
+
+			tableModel.addRow(row.toArray());		
+		});
+		
+		
+		table.getColumnModel().getColumn(0).setPreferredWidth(10);
+		table.getColumnModel().getColumn(1).setPreferredWidth(12);
+		table.getColumnModel().getColumn(2).setPreferredWidth(350);
+		table.getColumnModel().getColumn(3).setPreferredWidth(10);
+		table.getColumnModel().getColumn(4).setPreferredWidth(10);
+		table.getColumnModel().getColumn(5).setPreferredWidth(10);
+		table.getColumnModel().getColumn(6).setPreferredWidth(10);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	private void filter() {
 		List<RowFilter<TableModel, Integer>> filters = new ArrayList<>();
@@ -102,6 +179,10 @@ public class FrameStock extends javax.swing.JInternalFrame {
           filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           jButton2 = new javax.swing.JButton();
           jButton3 = new javax.swing.JButton();
+          jSplitPane1 = new javax.swing.JSplitPane();
+          jScrollPane2 = new javax.swing.JScrollPane();
+          jXTree1 = new org.jdesktop.swingx.JXTree();
+          jPanel1 = new javax.swing.JPanel();
           jScrollPane1 = new javax.swing.JScrollPane();
           table = new org.jdesktop.swingx.JXTable();
           jToolBar2 = new javax.swing.JToolBar();
@@ -170,6 +251,19 @@ public class FrameStock extends javax.swing.JInternalFrame {
 
           getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
+          jSplitPane1.setDividerLocation(220);
+
+          jXTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+               public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                    jXTree1ValueChanged(evt);
+               }
+          });
+          jScrollPane2.setViewportView(jXTree1);
+
+          jSplitPane1.setLeftComponent(jScrollPane2);
+
+          jPanel1.setLayout(new java.awt.BorderLayout());
+
           jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "GJENDJA E ARTIKUJVE NE MAGAZINA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
           table.setModel(new javax.swing.table.DefaultTableModel(
@@ -177,14 +271,14 @@ public class FrameStock extends javax.swing.JInternalFrame {
 
                },
                new String [] {
-                    "Kodi", "Pershkrimi", "Njesia", "Sasia", "QENDRA", "PAJTONI (TR)"
+                    "Kodi", "Barkodi", "Pershkrimi", "Njesia", "Sasia", "QENDRA", "PAJTONI (TR)"
                }
           ) {
                Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
                };
                boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false
+                    false, false, false, false, false, false, false
                };
 
                public Class getColumnClass(int columnIndex) {
@@ -200,14 +294,15 @@ public class FrameStock extends javax.swing.JInternalFrame {
           jScrollPane1.setViewportView(table);
           if (table.getColumnModel().getColumnCount() > 0) {
                table.getColumnModel().getColumn(0).setPreferredWidth(10);
-               table.getColumnModel().getColumn(1).setPreferredWidth(350);
-               table.getColumnModel().getColumn(2).setPreferredWidth(10);
+               table.getColumnModel().getColumn(1).setPreferredWidth(12);
+               table.getColumnModel().getColumn(2).setPreferredWidth(350);
                table.getColumnModel().getColumn(3).setPreferredWidth(10);
-               table.getColumnModel().getColumn(4).setPreferredWidth(0);
-               table.getColumnModel().getColumn(5).setPreferredWidth(10);
+               table.getColumnModel().getColumn(4).setPreferredWidth(10);
+               table.getColumnModel().getColumn(5).setPreferredWidth(0);
+               table.getColumnModel().getColumn(6).setPreferredWidth(10);
           }
 
-          getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+          jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
           jToolBar2.setFloatable(false);
           jToolBar2.setRollover(true);
@@ -241,7 +336,11 @@ public class FrameStock extends javax.swing.JInternalFrame {
           });
           jToolBar2.add(checkZero);
 
-          getContentPane().add(jToolBar2, java.awt.BorderLayout.PAGE_END);
+          jPanel1.add(jToolBar2, java.awt.BorderLayout.PAGE_END);
+
+          jSplitPane1.setRightComponent(jPanel1);
+
+          getContentPane().add(jSplitPane1, java.awt.BorderLayout.CENTER);
 
           pack();
      }// </editor-fold>//GEN-END:initComponents
@@ -278,6 +377,10 @@ public class FrameStock extends javax.swing.JInternalFrame {
 		JOptionPane.showMessageDialog(this, txt,"Magazinat", JOptionPane.PLAIN_MESSAGE);
      }//GEN-LAST:event_jButton3ActionPerformed
 
+     private void jXTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jXTree1ValueChanged
+          this.refreshTable();
+     }//GEN-LAST:event_jXTree1ValueChanged
+
 
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.JCheckBox checkZero;
@@ -286,10 +389,14 @@ public class FrameStock extends javax.swing.JInternalFrame {
      private javax.swing.JButton jButton1;
      private javax.swing.JButton jButton2;
      private javax.swing.JButton jButton3;
+     private javax.swing.JPanel jPanel1;
      private javax.swing.JScrollPane jScrollPane1;
+     private javax.swing.JScrollPane jScrollPane2;
+     private javax.swing.JSplitPane jSplitPane1;
      private javax.swing.JToolBar jToolBar1;
      private javax.swing.JToolBar jToolBar2;
      private org.jdesktop.swingx.JXSearchField jXSearchField1;
+     private org.jdesktop.swingx.JXTree jXTree1;
      private org.jdesktop.swingx.JXTable table;
      // End of variables declaration//GEN-END:variables
 }

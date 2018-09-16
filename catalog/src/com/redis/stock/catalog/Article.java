@@ -26,15 +26,20 @@ import java.util.logging.Logger;
 public class Article {
 	
 	private final String code;
-	private String sector, category, name;
+	private String sector, category, supplier, barcode, name;
+	private final Double buyPrice, costPrice;
 	private Double sellPrice, sellPriceTemp;
 	private Instant instant;
 
-	public Article(String code, String sector, String category, String name, Double sellPrice, Double sellPriceTemp, Instant instant) {
+	public Article(String code, String sector, String category, String supplier, String barcode, String name, Double buyPrice, Double costPrice, Double sellPrice, Double sellPriceTemp, Instant instant) {
 		this.code = code;
-		this.sector = sector == null ? "" : sector;
-		this.category = category == null ? "" : category;
+		this.sector = sector;
+		this.category = category;
+		this.supplier = supplier;
+		this.barcode = barcode;
 		this.name = name;
+		this.buyPrice = buyPrice;
+		this.costPrice = costPrice;
 		this.sellPrice = sellPrice;
 		this.sellPriceTemp = sellPriceTemp;
 		this.instant = instant;
@@ -51,9 +56,25 @@ public class Article {
 	public String getCategory() {
 		return category;
 	}
-	
+
+	public String getSupplier() {
+		return supplier;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public Double getBuyPrice() {
+		return buyPrice;
+	}
+
+	public Double getCostPrice() {
+		return costPrice;
 	}
 
 	public Double getSellPrice() {
@@ -67,6 +88,12 @@ public class Article {
 	public Instant getInstant() {
 		return instant;
 	}
+	
+	
+	
+	
+
+	
 	
 
 	@Override
@@ -132,6 +159,51 @@ public class Article {
 		
 		return success;
 	}
+
+	public boolean setSupplier(String supplier) {
+		boolean success = false;
+		
+		try(Connection cn = SqlServer.getConnection()) {
+			PreparedStatement ps = cn.prepareStatement("UPDATE [ARTIKUJ] SET [KLASIF3] = ? WHERE [KOD] = ?");
+			ps.setString(2, this.code);
+			ps.setString(1, supplier);
+			
+			ps.execute();
+			
+			this.supplier = supplier;
+			
+			success = true;
+		} 
+		catch (SQLException ex) {
+			Logger.getLogger(Article.class.getName()).log(Level.SEVERE, null, ex);
+		}	
+		
+		return success;
+		
+	}
+
+	public boolean setBarcode(String barcode) {
+		boolean success = false;
+		
+		try(Connection cn = SqlServer.getConnection()) {
+			PreparedStatement ps = cn.prepareStatement("UPDATE [ARTIKUJ] SET [BC] = ? WHERE [KOD] = ?");
+			ps.setString(2, this.code);
+			ps.setString(1, barcode);
+			
+			ps.execute();
+			
+			this.supplier = supplier;
+			
+			success = true;
+		} 
+		catch (SQLException ex) {
+			Logger.getLogger(Article.class.getName()).log(Level.SEVERE, null, ex);
+		}	
+		
+		return success;
+	}
+	
+	
 	
 	public boolean setName(String name) {
 		boolean success = false;
@@ -211,7 +283,7 @@ public class Article {
 		
 		try(Connection cn = SqlServer.getConnection()) {
 			PreparedStatement ps = cn.prepareStatement(""
-				+ "SELECT ARTIKUJ.KOD, ARTIKUJ.KLASIF, ARTIKUJ.KLASIF2, ARTIKUJ.PERSHKRIM, ARTIKUJ.CMSH2, ARTIKUJ.CMSH1, ARTIKUJ.KLASIF6 "
+				+ "SELECT KOD, ISNULL(KLASIF, '') AS KLASIF, ISNULL(KLASIF2, '') AS KLASIF2, ISNULL(KLASIF3, '') AS KLASIF3, BC, PERSHKRIM, CMB, KOSTMES, CMSH2, CMSH1, ARTIKUJ.KLASIF6 "
 				+ "FROM ARTIKUJ "
 				+ "ORDER BY ARTIKUJ.KOD ASC");
 			
@@ -221,8 +293,12 @@ public class Article {
 				Article product = new Article(
 					rs.getString("KOD"), 
 					rs.getString("KLASIF"), 
-					rs.getString("KLASIF2"),
+					rs.getString("KLASIF2"), 
+					rs.getString("KLASIF3"), 
+					rs.getString("BC"),
 					rs.getString("PERSHKRIM"), 
+					rs.getDouble("CMB"),  
+					rs.getDouble("KOSTMES"),  
 					rs.getDouble("CMSH2"), 
 					rs.getDouble("CMSH1"), 
 					rs.getTimestamp("KLASIF6") == null ? null : rs.getTimestamp("KLASIF6").toInstant()

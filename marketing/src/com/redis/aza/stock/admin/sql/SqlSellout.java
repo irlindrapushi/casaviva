@@ -17,15 +17,19 @@
 
 package com.redis.aza.stock.admin.sql;
 
+import com.redis.aza.stock.admin.core.Item;
 import com.redis.aza.stock.admin.core.Sellout;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,11 +43,119 @@ public class SqlSellout implements Sellout {
 		return new SqlSellout();
 	}
 	
+	
+	public class StateImpl implements Sellout.State {
+		
+		Map<String, Double> weights = new HashMap<>();
+		Map<String, Double> values = new HashMap<>();
+		Map<String, Instant> firstEvent = new HashMap<>();
+		Map<String, Instant> lastEvent = new HashMap<>();
+
+		@Override
+		public Double getWeight(Item item) {
+			return weights.getOrDefault(item.getCode(), 0.0d);
+		}
+
+		@Override
+		public Double getValue(Item item) {
+			return this.values.getOrDefault(item.getCode(), 0.0d);
+		}
+
+		@Override
+		public Instant getFirstEvent(Item item) {
+			return this.firstEvent.get(item.getCode());
+		}
+
+		@Override
+		public Instant getLastEvent(Item item) {
+			return this.lastEvent.get(item.getCode());
+		}
+		
+		public void add(String item, Double weight, Double value, Instant first, Instant last) {
+			this.weights.merge(item, weight, Double::sum);
+			this.values.merge(item, value, Double::sum);
+			
+			if(first.isBefore(this.firstEvent.getOrDefault(item, Instant.MAX)))
+				this.firstEvent.put(item, first);
+			
+			if(last.isAfter(this.lastEvent.getOrDefault(item, Instant.MIN)))
+				this.lastEvent.put(item, first);
+		}
+
+		@Override
+		public Double getWeight() {
+			return this.weights.entrySet().stream().mapToDouble(Map.Entry::getValue).sum();
+		}
+
+		@Override
+		public Double getValue() {
+			return this.values.entrySet().stream().mapToDouble(Map.Entry::getValue).sum();
+		}
+	}
+	
+	@Override
+	public State getState() {
+		StateImpl stateImpl = new StateImpl();
+		
+		try(Connection cn = SQL.getConnection()) {
+			String sql = ""
+				+ "SELECT [item], [weight], [value], [vatValue], [totValue], [firstEvent], [lastEvent] "
+				+ "FROM [sellout_state]";
+			
+			PreparedStatement ps = cn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				stateImpl.add(
+					rs.getString("item"), 
+					rs.getDouble("weight"), 
+					rs.getDouble("totValue"), 
+					rs.getTimestamp("firstEvent") == null ? null : rs.getTimestamp("firstEvent").toInstant(),
+					rs.getTimestamp("lastEvent") == null ? null : rs.getTimestamp("lastEvent").toInstant()
+				);
+				
+			}			
+		} 
+		catch (SQLException ex) {
+			Logger.getLogger(SqlSellout.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		return stateImpl;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public List<Story> getStories() {
 		List<Story> stories = new ArrayList();
 		
-		try(Connection cn = SqlServer.getConnection()) {
+		try(Connection cn = SQL.getConnection()) {
 			String sql = ""
 				+ "SELECT [ss].[code], [ss].[description], [ss].[unit], [ss].[sumQuantity], [ss].[sumValue], [ss].[minDate], [ss].[maxDate] "
 				+ "FROM [SelloutStory] [ss]"
@@ -78,7 +190,7 @@ public class SqlSellout implements Sellout {
 	public List<Story> getStories(Date minDate, Date maxDate) {
 		List<Story> stories = new ArrayList();
 		
-		try(Connection cn = SqlServer.getConnection()) {
+		try(Connection cn = SQL.getConnection()) {
 			String sql = ""
 				+ "SELECT i.code, i.description, i.unit, SUM(s.quantity) AS sumQuantity, SUM(s.totValue) AS sumValue, MIN(s.date) AS minDate, MAX(s.date) AS maxDate "
 				+ "FROM Item AS i INNER JOIN Sellout AS s ON i.code = s.item "
@@ -118,7 +230,7 @@ public class SqlSellout implements Sellout {
 	public List<Event> getEvents(String itemCode) {
 		List<Event> events = new ArrayList();
 		
-		try(Connection cn = SqlServer.getConnection()) {
+		try(Connection cn = SQL.getConnection()) {
 			String sql = ""
 				+ "SELECT s.date, s.warehouse, s.client, i.code, i.description, i.unit, s.quantity, s.totValue / s.quantity AS price, s.totValue AS value "
 				+ "FROM Sellout s LEFT JOIN Item i ON s.item = i.code "
@@ -158,7 +270,7 @@ public class SqlSellout implements Sellout {
 	public static List<Sellout.DateSellout> select(Date minDate, Date maxDate) {
 		List<Sellout.DateSellout> dateSellouts = new ArrayList();
 		
-		try(Connection cn = SqlServer.getConnection()) {
+		try(Connection cn = SQL.getConnection()) {
 			PreparedStatement ps = cn.prepareStatement(""
 				+ "SELECT [date], SUM([totValue]) AS value "
 				+ "FROM [Sellout] "
@@ -179,4 +291,6 @@ public class SqlSellout implements Sellout {
 		
 		return dateSellouts;
 	}
+
+	
 }

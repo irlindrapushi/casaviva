@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Redjan Shabani
+ * Copyright (C) 2018 Redjan Shabani
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.redis.aza.stock.admin.core;
 
 /**
@@ -23,9 +22,6 @@ package com.redis.aza.stock.admin.core;
  */
 public interface Item {
 	public String getCode();
-	public String getDescription();
+	public String getName();
 	public String getUnit();
-	public Float getQuantity();
-	public Float getPrice();
-	public Float getValue();
 }

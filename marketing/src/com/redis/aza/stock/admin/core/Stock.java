@@ -17,9 +17,9 @@
 
 package com.redis.aza.stock.admin.core;
 
+import com.redis.aza.stock.admin.utils.Dataset;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 
 /**
  *
@@ -27,19 +27,38 @@ import java.util.function.Consumer;
  */
 public interface Stock {
 	
-	public boolean forEach(Consumer<Stock.Item> consumer);
+	public Dataset<String, Subject> suppliers();
+	public Dataset<String, Subject> customer();
+	public Dataset<String, ? extends Warehouse> warehouses();
 	
-	public static class Item extends HashMap<String, Float>{
-		private final String code, description, unit;
+	public Catalog getCatalog();
+	
+	
+	public State getState();
+	public State getState(Warehouse warehouse);
+	
+	
+//	public boolean forEach(Consumer<Stock.Item> consumer);
+	
+	
+	
+	public static class Item extends HashMap<String, Float> {
+		
+		private final String code, barcode, description, unit;
 
-		public Item(String code, String description, String unit) {
+		public Item(String code, String barcode, String description, String unit) {
 			this.code = code;
+			this.barcode = barcode;
 			this.description = description;
 			this.unit = unit;
 		}
 
 		public String getCode() {
 			return code;
+		}
+
+		public String getBarcode() {
+			return barcode;
 		}
 
 		public String getDescription() {
@@ -49,6 +68,9 @@ public interface Stock {
 		public String getUnit() {
 			return unit;
 		}
+
+		
+		
 		
 		public Float getQuantity() {
 			return ((Number)super.entrySet().stream().mapToDouble(Map.Entry::getValue).sum()).floatValue();
