@@ -137,8 +137,10 @@ public class FrameMain extends javax.swing.JFrame {
 				Article p = articles.get(i);
 				Double q0 = stocks.get(0).getQuantity(p);
 				Double q1 = stocks.get(1).getQuantity(p);
-				Double sellPrice = (p.getSellPriceTemp() > 1 ? p.getSellPriceTemp() : p.getSellPrice());
-				Double sellPriceMarge = (sellPrice - p.getCostPrice()) / sellPrice;
+				Double price = (p.getSellPriceTemp() > 1 ? p.getSellPriceTemp() : p.getSellPrice());
+				Double cost = p.getCostPrice();
+				Double marge = (price - p.getCostPrice()) / price;
+				Double coeff = (price - cost) / cost;
 				switch(i1){
 					case 0: return p.getCode();
 					case 1: return p.getSector();
@@ -150,7 +152,7 @@ public class FrameMain extends javax.swing.JFrame {
 					case 7: return p.getCostPrice();
 					case 8: return p.getSellPrice();
 					case 9: return p.getSellPriceTemp();
-					case 10: return sellPriceMarge;
+					case 10: return coeff;
 					case 11: return p.getInstant();
 					case 12: return q0;
 					case 13: return q1;
