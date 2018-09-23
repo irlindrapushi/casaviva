@@ -85,7 +85,6 @@ public class MainFrame extends javax.swing.JFrame {
           jButton2.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
           jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/price-label-32.png"))); // NOI18N
           jButton2.setText("Etiketat");
-          jButton2.setEnabled(false);
           jButton2.setFocusable(false);
           jButton2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
           jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);

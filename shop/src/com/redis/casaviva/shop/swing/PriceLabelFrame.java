@@ -8,7 +8,8 @@ package com.redis.casaviva.shop.swing;
 import com.redis.casaviva.shop.dc.Feature;
 import com.redis.casaviva.shop.dc.Product;
 import com.redis.casaviva.shop.dc.Warehouse;
-import com.redis.casaviva.shop.export.LabelHTMLExport;
+import com.redis.casaviva.shop.export.Label;
+import com.redis.casaviva.shop.export.PriceLabel;
 import com.redis.utils.export.ExcelIO;
 import java.awt.Component;
 import java.awt.Desktop;
@@ -36,7 +37,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 
 /**
@@ -254,8 +254,6 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
           filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
           jButton1 = new javax.swing.JButton();
           jButton3 = new javax.swing.JButton();
-          jButton6 = new javax.swing.JButton();
-          jButton7 = new javax.swing.JButton();
           jSplitPane1 = new javax.swing.JSplitPane();
           jPanel1 = new javax.swing.JPanel();
           jScrollPane2 = new javax.swing.JScrollPane();
@@ -329,7 +327,7 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
           jToolBar3.add(jButton1);
 
           jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/print_24.png"))); // NOI18N
-          jButton3.setText("140mm X 63mm");
+          jButton3.setText("297x210");
           jButton3.setFocusable(false);
           jButton3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
           jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -339,30 +337,6 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
                }
           });
           jToolBar3.add(jButton3);
-
-          jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/print_24.png"))); // NOI18N
-          jButton6.setText("70mm X 38mm");
-          jButton6.setFocusable(false);
-          jButton6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-          jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-          jButton6.addActionListener(new java.awt.event.ActionListener() {
-               public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton6ActionPerformed(evt);
-               }
-          });
-          jToolBar3.add(jButton6);
-
-          jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/ic/print_24.png"))); // NOI18N
-          jButton7.setText("70mm X 75mm");
-          jButton7.setFocusable(false);
-          jButton7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-          jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-          jButton7.addActionListener(new java.awt.event.ActionListener() {
-               public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    jButton7ActionPerformed(evt);
-               }
-          });
-          jToolBar3.add(jButton7);
 
           getContentPane().add(jToolBar3, java.awt.BorderLayout.PAGE_START);
 
@@ -522,13 +496,25 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
      }//GEN-LAST:event_jButton1ActionPerformed
 
      private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-//          TableModel tableModel = (TableModel) table.getModel();
-//		File file = LabelHTMLExport.exportHtmlFromPriceLables3x2("./temp/price_label_export.html", tableModel.getPriceLabels());
-//          try {
-//               Desktop.getDesktop().open(file);
-//          } catch (IOException ex) {
-//               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
-//          }
+		List<PriceLabel> labels = new ArrayList();
+		
+		TableModel tableModel = (TableModel) this.table.getModel();
+		tableModel.getPriceLabels().forEach(l -> {			
+			PriceLabel label = new PriceLabel(l.getCode(), l.getBarcode(), l.getDescription(), l.getPrice(), l.getInstant());
+			labels.add(label);
+			
+		});
+		
+		
+		
+		File file = PriceLabel.generatePDF(labels);
+		
+		try {
+			Desktop.getDesktop().open(file);
+		}
+		catch (IOException ex) {
+			Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
+		}
      }//GEN-LAST:event_jButton3ActionPerformed
 
      private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
@@ -566,26 +552,6 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
           filterTableRows();
      }//GEN-LAST:event_treeValueChanged
 
-     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-//          TableModel tableModel = (TableModel) table.getModel();
-//		File file = LabelHTMLExport.exportHtmlFromPriceLables2("./temp/price_label_export_2x6.html", tableModel.getPriceLabels());
-//          try {
-//               Desktop.getDesktop().open(file);
-//          } catch (IOException ex) {
-//               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
-//          }
-     }//GEN-LAST:event_jButton6ActionPerformed
-
-     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-//          TableModel tableModel = (TableModel) table.getModel();
-//		File file = LabelHTMLExport.exportHtmlFromPriceLables3("./temp/price_label_export_2x3.html", tableModel.getPriceLabels());
-//          try {
-//               Desktop.getDesktop().open(file);
-//          } catch (IOException ex) {
-//               Logger.getLogger(SpecialLabelFrame.class.getName()).log(Level.SEVERE, null, ex);
-//          }
-     }//GEN-LAST:event_jButton7ActionPerformed
-
 
      // Variables declaration - do not modify//GEN-BEGIN:variables
      private javax.swing.Box.Filler filler1;
@@ -596,8 +562,6 @@ public class PriceLabelFrame extends javax.swing.JInternalFrame {
      private javax.swing.JButton jButton3;
      private javax.swing.JButton jButton4;
      private javax.swing.JButton jButton5;
-     private javax.swing.JButton jButton6;
-     private javax.swing.JButton jButton7;
      private javax.swing.JCheckBox jCheckBox3;
      private javax.swing.JPanel jPanel1;
      private javax.swing.JPanel jPanel2;
