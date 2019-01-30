@@ -9,7 +9,7 @@
 	<entry key="website">www.casaviva.al</entry>
 	<entry key="email">info@casaviva.al</entry>
 	
-	<entry key="url">jdbc:sqlserver://217.21.146.248:3306;databaseName=L86724204J;user=sa;password=</entry>
+	<entry key="url">jdbc:sqlserver://192.168.1.18:3306;databaseName=L86724204J;user=sa;password=</entry>
 	<entry key="username">sa</entry>
 	<entry key="password"></entry>
 </properties>
